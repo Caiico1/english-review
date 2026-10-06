@@ -19,6 +19,16 @@ Abre <http://localhost:5173>.
 | `npm run build` | Valida las lecciones y genera la versión final en `dist/` |
 | `npm run preview` | Sirve `dist/` en local para probar la versión final |
 
+### En línea (cualquier PC o móvil)
+
+La app está publicada en <https://caiico1.github.io/english-review/>. Cada `git push` a `main` la vuelve a publicar sola en un par de minutos (flujo en `.github/workflows/deploy.yml`), así que una lección nueva llega a todos los dispositivos con:
+
+```bash
+git add -A && git commit -m "Lección 1B" && git push
+```
+
+Tras la primera visita queda guardada en el dispositivo y abre sin conexión. El progreso sigue siendo local de cada navegador: para moverlo, **Progreso → Exportar** e **Importar**.
+
 ### Otros ordenadores: versión portátil
 
 ```bash
