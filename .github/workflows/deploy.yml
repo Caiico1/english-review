@@ -1,5 +1,5 @@
-# Publica la app en GitHub Pages cada vez que se sube un cambio a main
-name: Publicar en GitHub Pages
+# Publishes the app to GitHub Pages on every push to main
+name: Deploy to GitHub Pages
 
 on:
   push:
