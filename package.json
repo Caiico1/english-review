@@ -1,0 +1,17 @@
+{
+  "name": "english-review",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "validate": "node scripts/validate-lessons.mjs",
+    "build": "node scripts/validate-lessons.mjs && vite build",
+    "preview": "vite preview",
+    "build:portable": "npm run build && node scripts/build-single.mjs",
+    "test": "node --test scripts/check.test.mjs"
+  },
+  "devDependencies": {
+    "vite": "^8.3.2"
+  }
+}

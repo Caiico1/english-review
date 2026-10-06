@@ -1,0 +1,269 @@
+{
+  "$schema": "../../schema/lesson.schema.json",
+  "id": "01a",
+  "number": 1,
+  "title": "Questions and answers",
+  "source": "English File Upper-Intermediate Plus (4.ª ed.), 1A, pp. 6–9 y Grammar Bank p. 132",
+  "classDate": "2026-10-05",
+  "objectives": [
+    "Formar preguntas con auxiliares y modales (inversión, do/does/did).",
+    "Usar preguntas negativas para mostrar sorpresa o confirmar algo.",
+    "Colocar la preposición al final de la pregunta.",
+    "Distinguir las preguntas de sujeto, que no llevan do/did.",
+    "Hacer preguntas indirectas para sonar más educado.",
+    "Reaccionar con interés a una respuesta y negarse con educación a contestar."
+  ],
+  "vocabulary": [
+    { "id": "v-job-seeker", "word": "job-seeker", "translation": "persona que busca empleo", "partOfSpeech": "noun", "example": "The website gives advice to **job-seekers**.", "exampleTranslation": "La web da consejos a quienes buscan empleo." },
+    { "id": "v-point-of", "word": "the point of", "translation": "el sentido de, la finalidad de", "partOfSpeech": "phrase", "example": "What's **the point of** a CV if nobody reads it?", "exampleTranslation": "¿Qué sentido tiene un currículum si nadie lo lee?" },
+    { "id": "v-rivalry", "word": "good-natured rivalry", "translation": "rivalidad amistosa", "partOfSpeech": "phrase", "example": "There's a **good-natured rivalry** between the two teams.", "exampleTranslation": "Hay una rivalidad amistosa entre los dos equipos.", "pronunciationHint": "/ˈraɪvlri/ · «RÁI-vl-ri»" },
+    { "id": "v-light-hearted", "word": "light-hearted response", "translation": "respuesta desenfadada", "partOfSpeech": "phrase", "example": "She gave a **light-hearted response** and everybody laughed.", "exampleTranslation": "Dio una respuesta desenfadada y todos se rieron.", "pronunciationHint": "/ˌlaɪt ˈhɑːtɪd/" },
+    { "id": "v-foolproof", "word": "foolproof", "translation": "infalible, a prueba de fallos", "partOfSpeech": "adjective", "example": "There's no **foolproof** way to pass an interview.", "exampleTranslation": "No hay una forma infalible de superar una entrevista." },
+    { "id": "v-geek", "word": "geek", "translation": "friki, obseso de un tema (informal)", "partOfSpeech": "noun", "example": "My brother is a real computer **geek**.", "exampleTranslation": "Mi hermano es un auténtico friki de los ordenadores.", "pronunciationHint": "/ɡiːk/ · i larga" },
+    { "id": "v-work-life", "word": "work–life balance", "translation": "equilibrio entre trabajo y vida personal", "partOfSpeech": "phrase", "example": "I changed jobs to get a better **work–life balance**.", "exampleTranslation": "Cambié de trabajo para tener un mejor equilibrio entre trabajo y vida personal." },
+    { "id": "v-gut-feeling", "word": "gut feeling", "translation": "corazonada, intuición", "partOfSpeech": "noun", "example": "I had a **gut feeling** that he wasn't telling the truth.", "exampleTranslation": "Tuve la corazonada de que no decía la verdad.", "pronunciationHint": "/ɡʌt/ · la u suena casi «a»" },
+    { "id": "v-headline", "word": "headline", "translation": "ser cabeza de cartel", "partOfSpeech": "verb", "example": "The band will **headline** the festival this summer.", "exampleTranslation": "El grupo será cabeza de cartel del festival este verano." },
+    { "id": "v-treasured", "word": "treasured possession", "translation": "posesión más preciada", "partOfSpeech": "phrase", "example": "This old watch is my most **treasured possession**.", "exampleTranslation": "Este reloj viejo es mi posesión más preciada.", "pronunciationHint": "/ˈtreʒəd pəˈzeʃn/" },
+    { "id": "v-self-centred", "word": "self-centred", "translation": "egocéntrico", "partOfSpeech": "adjective", "example": "He's so **self-centred** that he never asks about you.", "exampleTranslation": "Es tan egocéntrico que nunca pregunta por ti." },
+    { "id": "v-embarrassing", "word": "embarrassing", "translation": "embarazoso, que da vergüenza", "partOfSpeech": "adjective", "example": "Forgetting her name was really **embarrassing**.", "exampleTranslation": "Olvidarme de su nombre fue muy embarazoso.", "pronunciationHint": "/ɪmˈbærəsɪŋ/ · no significa «embarazada» (pregnant)" },
+    { "id": "v-overuse", "word": "overuse", "translation": "abusar de, usar demasiado", "partOfSpeech": "verb", "example": "I **overuse** the word 'actually'.", "exampleTranslation": "Abuso de la palabra «actually».", "pronunciationHint": "/ˌəʊvəˈjuːz/ · verbo, con z final" },
+    { "id": "v-owe", "word": "owe", "translation": "deber (dinero, un favor)", "partOfSpeech": "verb", "example": "I **owe** my sister twenty euros.", "exampleTranslation": "Le debo veinte euros a mi hermana.", "pronunciationHint": "/əʊ/ · suena como la letra «o» en inglés" },
+    { "id": "v-wallpaper", "word": "wallpaper", "translation": "fondo de pantalla", "partOfSpeech": "noun", "example": "My **wallpaper** is a photo of my dog.", "exampleTranslation": "Mi fondo de pantalla es una foto de mi perro." },
+    { "id": "v-keep-awake", "word": "keep somebody awake", "translation": "mantener despierto, quitar el sueño", "partOfSpeech": "phrase", "example": "The noise from the street **keeps me awake**.", "exampleTranslation": "El ruido de la calle no me deja dormir." },
+    { "id": "v-fall-asleep", "word": "fall asleep", "translation": "quedarse dormido", "partOfSpeech": "verb", "example": "I always **fall asleep** on the train.", "exampleTranslation": "Siempre me quedo dormido en el tren." },
+    { "id": "v-guilty-pleasure", "word": "guilty pleasure", "translation": "placer culpable", "partOfSpeech": "noun", "example": "Reality TV is my **guilty pleasure**.", "exampleTranslation": "Los realities son mi placer culpable.", "pronunciationHint": "/ˈɡɪlti ˈpleʒə/ · la u de guilty no suena" },
+    { "id": "v-tough", "word": "tough", "translation": "difícil, duro", "partOfSpeech": "adjective", "example": "They asked me some really **tough** questions.", "exampleTranslation": "Me hicieron unas preguntas muy difíciles.", "pronunciationHint": "/tʌf/ · «taf»" },
+    { "id": "v-weakness", "word": "weakness", "translation": "punto débil", "partOfSpeech": "noun", "example": "My biggest **weakness** is that I'm impatient.", "exampleTranslation": "Mi mayor punto débil es que soy impaciente." },
+    { "id": "v-strength", "word": "strength", "translation": "punto fuerte", "partOfSpeech": "noun", "example": "Working in a team is one of her **strengths**.", "exampleTranslation": "Trabajar en equipo es uno de sus puntos fuertes.", "pronunciationHint": "/streŋθ/" },
+    { "id": "v-selfish", "word": "selfish", "translation": "egoísta", "partOfSpeech": "adjective", "example": "It was **selfish** of him to eat all the cake.", "exampleTranslation": "Fue egoísta por su parte comerse toda la tarta." },
+    { "id": "v-drive", "word": "drive", "translation": "empuje, ambición", "partOfSpeech": "noun", "example": "She has the **drive** to succeed in business.", "exampleTranslation": "Tiene el empuje necesario para triunfar en los negocios." },
+    { "id": "v-apply-for", "word": "apply for a job", "translation": "solicitar un empleo", "partOfSpeech": "phrase", "example": "I've **applied for** three **jobs** this month.", "exampleTranslation": "He solicitado tres empleos este mes." }
+  ],
+  "phrases": [
+    { "id": "p-prefer-not", "en": "I'd prefer not to answer that.", "es": "Preferiría no contestar a eso.", "context": "Para negarte con educación a responder una pregunta indiscreta." },
+    { "id": "p-rather-not", "en": "I'd rather not answer that if you don't mind.", "es": "Preferiría no contestar a eso, si no te importa.", "context": "Igual que la anterior. Ojo: después de «would rather» va el verbo sin «to»." },
+    { "id": "p-oh-really", "en": "Oh, really?", "es": "¿Ah, sí? / ¿De verdad?", "context": "Para mostrar interés por lo que te acaban de decir." },
+    { "id": "p-what-a-shame", "en": "What a shame!", "es": "¡Qué pena!", "context": "Para mostrar compasión ante una mala noticia." },
+    { "id": "p-me-too", "en": "Me too!", "es": "¡Yo también!", "context": "Para decir que te pasa lo mismo." },
+    { "id": "p-how-interesting", "en": "How interesting!", "es": "¡Qué interesante!", "context": "Exclamación para mostrar interés." },
+    { "id": "p-why-is-that", "en": "Why is that?", "es": "¿Y eso por qué?", "context": "Pregunta de seguimiento para que la otra persona siga hablando." },
+    { "id": "p-why-say-that", "en": "Why do you say that?", "es": "¿Por qué lo dices?", "context": "Pregunta de seguimiento tras una opinión." },
+    { "id": "p-could-you-tell-me", "en": "Could you tell me…?", "es": "¿Podría decirme…?", "context": "Introduce una pregunta indirecta, más educada." },
+    { "id": "p-would-you-mind", "en": "Would you mind telling me…?", "es": "¿Le importaría decirme…?", "context": "Introduce una pregunta indirecta muy educada." },
+    { "id": "p-any-idea", "en": "Do you have any idea…?", "es": "¿Tienes idea de…?", "context": "Introduce una pregunta indirecta." },
+    { "id": "p-i-wonder", "en": "I wonder…", "es": "Me pregunto…", "context": "Va seguido del orden de una pregunta indirecta (sujeto + verbo)." }
+  ],
+  "grammar": [
+    {
+      "id": "g-inversion",
+      "title": "Preguntas con auxiliar o modal",
+      "explanation": "En inglés la pregunta se marca cambiando el orden: el auxiliar o el modal pasa delante del sujeto. Si el tiempo verbal no tiene auxiliar (presente y pasado simples), se añade **do / does / did**.",
+      "rules": [
+        "Con auxiliar (be, have…) o modal (should, can, must…): **auxiliar + sujeto + verbo**.",
+        "En presente simple y pasado simple: **do / does / did + sujeto + infinitivo** sin «to».",
+        "El orden completo es: (partícula interrogativa) + auxiliar + sujeto + verbo principal."
+      ],
+      "examples": [
+        { "en": "How long **have you** lived here?", "es": "¿Cuánto tiempo llevas viviendo aquí?" },
+        { "en": "Where **did your parents** meet?", "es": "¿Dónde se conocieron tus padres?" },
+        { "en": "**Should we** book a table?", "es": "¿Deberíamos reservar mesa?" },
+        { "en": "How many cousins **does she** have?", "es": "¿Cuántos primos tiene?" }
+      ],
+      "commonMistakes": [
+        { "wrong": "Where you went last night?", "right": "Where **did you go** last night?", "why": "En español basta con la entonación; en inglés hace falta el auxiliar «did» delante del sujeto." },
+        { "wrong": "What means this word?", "right": "What **does** this word **mean**?", "why": "El sujeto es «this word»; el verbo principal va detrás del sujeto, no delante." },
+        { "wrong": "Did you went to the party?", "right": "**Did** you **go** to the party?", "why": "El pasado ya lo marca «did»; el verbo principal va en infinitivo." }
+      ]
+    },
+    {
+      "id": "g-negative",
+      "title": "Preguntas negativas",
+      "explanation": "Se forman con el auxiliar en negativo delante del sujeto. Se usan para mostrar sorpresa, cuando esperas que el otro esté de acuerdo contigo, o para comprobar si algo es cierto.",
+      "rules": [
+        "**Auxiliar negativo contraído + sujeto + verbo**: Don't you…? Isn't it…? Didn't they…?",
+        "Con partícula interrogativa, la partícula va primero: **Why didn't you…?**"
+      ],
+      "examples": [
+        { "en": "**Didn't you** enjoy the concert?", "es": "¿No te gustó el concierto?", "note": "Sorpresa: yo creía que te gustaría." },
+        { "en": "**Isn't this** a lovely town?", "es": "¿A que es un pueblo precioso?", "note": "Espero que estés de acuerdo." },
+        { "en": "**Don't you** start work at nine?", "es": "¿No empiezas a trabajar a las nueve?", "note": "Compruebo si es verdad." }
+      ],
+      "commonMistakes": [
+        { "wrong": "Why you didn't call me?", "right": "Why **didn't you** call me?", "why": "La inversión se mantiene también en negativo: el auxiliar va delante del sujeto." },
+        { "wrong": "Not you like coffee?", "right": "**Don't you** like coffee?", "why": "La negación va pegada al auxiliar (don't), no suelta al principio." }
+      ]
+    },
+    {
+      "id": "g-preposition",
+      "title": "Preposición al final",
+      "explanation": "Si el verbo va normalmente seguido de una preposición (talk about, listen to, belong to…), en la pregunta la preposición se queda al final, no al principio como en español.",
+      "rules": [
+        "**Partícula interrogativa + auxiliar + sujeto + verbo + preposición?**",
+        "En respuestas cortas se usa a menudo solo la partícula y la preposición: «I'm waiting.» «**Who for?**»"
+      ],
+      "examples": [
+        { "en": "What are you looking **at**?", "es": "¿Qué estás mirando?" },
+        { "en": "Who does this jacket belong **to**?", "es": "¿De quién es esta chaqueta?" },
+        { "en": "Who did you go on holiday **with**?", "es": "¿Con quién te fuiste de vacaciones?" },
+        { "en": "«I'm worried.» «What **about**?»", "es": "«Estoy preocupado.» «¿Por qué?»" }
+      ],
+      "commonMistakes": [
+        { "wrong": "About what are you talking?", "right": "What are you talking **about**?", "why": "Es un calco del español («¿De qué…?»). En inglés la preposición va al final." },
+        { "wrong": "With who did you go?", "right": "Who did you go **with**?", "why": "Igual: «¿Con quién…?» se convierte en «Who … with?»." },
+        { "wrong": "What are you waiting?", "right": "What are you waiting **for**?", "why": "No se puede omitir la preposición que exige el verbo (wait for)." }
+      ]
+    },
+    {
+      "id": "g-subject",
+      "title": "Preguntas de sujeto",
+      "explanation": "Cuando who, what, which o how many son el **sujeto** de la frase (preguntas por quién hace la acción), en presente y pasado simples no se usa do / does / did: el verbo va directamente detrás, como en una afirmativa.",
+      "rules": [
+        "Pregunta de sujeto: **Who / What + verbo** (en tercera persona): Who **lives** here?",
+        "Pregunta de objeto: **Who / What + auxiliar + sujeto + verbo**: Who **do you live** with?",
+        "Truco: si la respuesta sustituye a who / what delante del verbo (**Ana** called), es pregunta de sujeto."
+      ],
+      "examples": [
+        { "en": "Who **painted** this picture?", "es": "¿Quién pintó este cuadro?" },
+        { "en": "What **makes** you laugh?", "es": "¿Qué te hace reír?" },
+        { "en": "How many people **work** in your office?", "es": "¿Cuánta gente trabaja en tu oficina?" },
+        { "en": "Who **called** you? / Who **did you call**?", "es": "¿Quién te llamó? / ¿A quién llamaste?", "note": "La primera pregunta por el sujeto; la segunda, por el objeto." }
+      ],
+      "commonMistakes": [
+        { "wrong": "Who did write this?", "right": "Who **wrote** this?", "why": "«Who» es el sujeto, así que no hace falta «did»." },
+        { "wrong": "What did happen?", "right": "What **happened**?", "why": "«What» es el sujeto de «happened»." },
+        { "wrong": "Who live in that house?", "right": "Who **lives** in that house?", "why": "Con who como sujeto el verbo va en tercera persona del singular." }
+      ]
+    },
+    {
+      "id": "g-indirect",
+      "title": "Preguntas indirectas",
+      "explanation": "Sirven para preguntar de forma más educada. Empiezan con una fórmula (Could you tell me…? Do you know…? Do you have any idea…? Would you mind telling me…?) y, a partir de ahí, la frase sigue el orden de una afirmativa.",
+      "rules": [
+        "Después de la fórmula: **sujeto + verbo**, sin inversión.",
+        "En la segunda parte no se usa **do / does / did**.",
+        "Si la pregunta directa no tiene partícula interrogativa (es de sí o no), se une con **if** o **whether**.",
+        "El mismo orden se usa tras **I wonder…, I'm not sure…, I can't remember…, I'd like to know…**"
+      ],
+      "examples": [
+        { "en": "Could you tell me what time **the bank opens**?", "es": "¿Podría decirme a qué hora abre el banco?", "note": "Directa: What time does the bank open?" },
+        { "en": "Do you know **if** Laura **is coming** tonight?", "es": "¿Sabes si Laura viene esta noche?", "note": "Directa: Is Laura coming tonight?" },
+        { "en": "Do you have any idea where **I left** my glasses?", "es": "¿Tienes idea de dónde he dejado las gafas?" },
+        { "en": "I wonder why **they didn't reply**.", "es": "Me pregunto por qué no contestaron." }
+      ],
+      "commonMistakes": [
+        { "wrong": "Can you tell me where is the station?", "right": "Can you tell me where **the station is**?", "why": "En español se dice «dónde está la estación»; en inglés el verbo va después del sujeto." },
+        { "wrong": "Do you know where does he live?", "right": "Do you know where **he lives**?", "why": "En la segunda parte no hay do / does / did; el verbo recupera su forma normal (lives)." },
+        { "wrong": "Do you know Mark is coming?", "right": "Do you know **if** Mark is coming?", "why": "Sin partícula interrogativa hace falta if o whether." },
+        { "wrong": "I wonder what time does it start.", "right": "I wonder what time **it starts**.", "why": "«I wonder» va seguido del orden de las preguntas indirectas." }
+      ]
+    }
+  ],
+  "reading": {
+    "type": "dialogue",
+    "title": "Una entrevista de trabajo",
+    "intro": "Diálogo breve escrito para practicar las estructuras de la lección. Léelo primero sin traducción.",
+    "lines": [
+      { "speaker": "Interviewer", "en": "Thanks for coming in. Could you tell me **why you applied** for this job?", "es": "Gracias por venir. ¿Podría decirme por qué solicitó este puesto?" },
+      { "speaker": "Marta", "en": "I've always been a bit of a design geek, and I'd like a better work–life balance.", "es": "Siempre he sido un poco friki del diseño y me gustaría tener un mejor equilibrio entre trabajo y vida personal." },
+      { "speaker": "Interviewer", "en": "Oh, really? Why is that? **Didn't you** like your last job?", "es": "¿Ah, sí? ¿Y eso por qué? ¿No le gustaba su último trabajo?" },
+      { "speaker": "Marta", "en": "I did, but I worked every weekend. It kept me awake at night.", "es": "Sí, pero trabajaba todos los fines de semana. Me quitaba el sueño." },
+      { "speaker": "Interviewer", "en": "What a shame. Now a tough one: what's your biggest weakness?", "es": "Qué pena. Ahora una difícil: ¿cuál es su mayor punto débil?" },
+      { "speaker": "Marta", "en": "There's no foolproof answer to that! I sometimes overuse the word 'sorry'.", "es": "¡No hay una respuesta infalible para eso! A veces abuso de la palabra «sorry»." },
+      { "speaker": "Interviewer", "en": "And **who told** you about this position?", "es": "¿Y quién le habló de este puesto?" },
+      { "speaker": "Marta", "en": "A friend. I owe her a lot. Do you know **when you will make** a decision?", "es": "Una amiga. Le debo mucho. ¿Sabe cuándo tomarán una decisión?" },
+      { "speaker": "Interviewer", "en": "By Friday. And how much did you earn in your last job?", "es": "Antes del viernes. ¿Y cuánto ganaba en su último trabajo?" },
+      { "speaker": "Marta", "en": "I'd rather not answer that if you don't mind.", "es": "Preferiría no contestar a eso, si no le importa." }
+    ],
+    "questions": [
+      {
+        "id": "r-1", "type": "multiple-choice",
+        "prompt": "¿Por qué quiere Marta cambiar de trabajo?",
+        "options": ["Porque busca un mejor equilibrio entre trabajo y vida personal", "Porque no le gustaba nada su trabajo anterior", "Porque quiere ganar más dinero"],
+        "answer": 0,
+        "explanation": "Dice que quiere «a better work–life balance»; su trabajo anterior sí le gustaba («I did»)."
+      },
+      {
+        "id": "r-2", "type": "multiple-choice",
+        "prompt": "«Who told you about this position?» ¿Qué tipo de pregunta es?",
+        "options": ["Pregunta de sujeto (sin did)", "Pregunta indirecta", "Pregunta negativa"],
+        "answer": 0,
+        "explanation": "«Who» es el sujeto de «told», por eso no lleva «did»."
+      },
+      {
+        "id": "r-3", "type": "multiple-choice",
+        "prompt": "¿Cómo reacciona Marta a la pregunta sobre su sueldo?",
+        "options": ["Se niega a contestar con educación", "Dice la cifra exacta", "Cambia de tema sin responder"],
+        "answer": 0,
+        "explanation": "Usa la fórmula «I'd rather not answer that if you don't mind»."
+      }
+    ]
+  },
+  "exercises": [
+    { "id": "o-1", "type": "order-words", "answer": "Why didn't you answer my message?", "translation": "¿Por qué no contestaste a mi mensaje?", "explanation": "Pregunta negativa: partícula + auxiliar negativo + sujeto + verbo.", "tags": ["g-negative"] },
+    { "id": "o-2", "type": "order-words", "answer": "How long have you known your neighbours?", "translation": "¿Cuánto hace que conoces a tus vecinos?", "explanation": "Inversión con auxiliar: **have you** known.", "tags": ["g-inversion"] },
+    { "id": "o-3", "type": "order-words", "answer": "Could you tell me where the meeting room is?", "translation": "¿Podría decirme dónde está la sala de reuniones?", "explanation": "Pregunta indirecta: tras «where» va sujeto + verbo (**the meeting room is**).", "tags": ["g-indirect"] },
+    { "id": "o-4", "type": "order-words", "answer": "What are you waiting for?", "translation": "¿A qué estás esperando?", "explanation": "La preposición **for** va al final de la pregunta.", "tags": ["g-preposition"] },
+    { "id": "o-5", "type": "order-words", "answer": "Who told you about this job?", "translation": "¿Quién te habló de este trabajo?", "explanation": "Pregunta de sujeto: «who» + verbo en pasado, sin «did».", "tags": ["g-subject"] },
+    { "id": "o-6", "type": "order-words", "answer": "Do you know if the interview has started?", "translation": "¿Sabes si ha empezado la entrevista?", "explanation": "Pregunta indirecta de sí o no: se une con **if** y sigue sujeto + verbo.", "tags": ["g-indirect"] },
+    { "id": "o-7", "type": "order-words", "answer": "What kind of films does your brother like?", "translation": "¿Qué tipo de películas le gustan a tu hermano?", "explanation": "Presente simple: **does** + sujeto + infinitivo.", "tags": ["g-inversion"] },
+    { "id": "o-8", "type": "order-words", "answer": "I can't remember where I put my keys.", "translation": "No recuerdo dónde puse las llaves.", "explanation": "Tras «I can't remember» se usa el orden de las preguntas indirectas: **where I put**.", "tags": ["g-indirect"] },
+    { "id": "o-9", "type": "order-words", "answer": "How many people applied for the job?", "translation": "¿Cuánta gente solicitó el puesto?", "explanation": "«How many people» es el sujeto: no hace falta «did».", "tags": ["g-subject"] },
+
+    { "id": "f-1", "type": "fill-gap", "text": "Where ___ last summer?", "hint": "you / go", "answers": [["did you go"]], "explanation": "Pasado simple: **did** + sujeto + infinitivo.", "tags": ["g-inversion"] },
+    { "id": "f-2", "type": "fill-gap", "text": "Who ___ this email? It doesn't have a name on it.", "hint": "send (pasado)", "answers": [["sent"]], "explanation": "Pregunta de sujeto: el verbo va directamente en pasado, sin «did».", "tags": ["g-subject"] },
+    { "id": "f-3", "type": "fill-gap", "text": "Could you tell me how much ___?", "hint": "this jacket / cost", "answers": [["this jacket costs"]], "explanation": "Indirecta: sujeto + verbo, sin «does». El verbo recupera la -s: **costs**.", "tags": ["g-indirect"] },
+    { "id": "f-4", "type": "fill-gap", "text": "What kind of music are you listening ___?", "answers": [["to"]], "explanation": "«Listen to»: la preposición se queda al final.", "tags": ["g-preposition"] },
+    { "id": "f-5", "type": "fill-gap", "text": "___ you like your new flat? You don't look very happy.", "hint": "pregunta negativa, presente", "answers": [["Don't", "Do not"]], "explanation": "Pregunta negativa para mostrar sorpresa: **Don't you…?**", "tags": ["g-negative"] },
+    { "id": "f-6", "type": "fill-gap", "text": "Do you know ___ the shop is open on Sundays?", "answers": [["if", "whether"]], "explanation": "Pregunta de sí o no en forma indirecta: se une con **if** o **whether**.", "tags": ["g-indirect"] },
+    { "id": "f-7", "type": "fill-gap", "text": "How often ___ to the gym?", "hint": "your sister / go", "answers": [["does your sister go"]], "explanation": "Presente simple, tercera persona: **does** + sujeto + infinitivo.", "tags": ["g-inversion"] },
+    { "id": "f-8", "type": "fill-gap", "text": "What ___ you awake at night?", "hint": "keep (presente)", "answers": [["keeps"]], "explanation": "Pregunta de sujeto: «what» + verbo en tercera persona, sin «does».", "tags": ["g-subject"] },
+    { "id": "f-9", "type": "fill-gap", "text": "I wonder why ___ us yesterday.", "hint": "they / not call", "answers": [["they didn't call", "they did not call"]], "explanation": "Tras «I wonder» va el orden de afirmativa: sujeto + verbo. Aquí «didn't» es la negación, no una inversión.", "tags": ["g-indirect"] },
+    { "id": "f-10", "type": "fill-gap", "text": "There's no ___ way to prepare for an interview: something can always go wrong.", "hint": "adjetivo: infalible", "answers": [["foolproof"]], "explanation": "**Foolproof** = diseñado para que no pueda fallar.", "tags": ["vocab"] },
+    { "id": "f-11", "type": "fill-gap", "text": "I couldn't explain why, but I had a gut ___ that the job wasn't right for me.", "answers": [["feeling"]], "explanation": "**Gut feeling** = corazonada, reacción basada en la intuición.", "tags": ["vocab"] },
+    { "id": "f-12", "type": "fill-gap", "text": "How much money do you ___ your brother?", "hint": "verbo: deber", "answers": [["owe"]], "explanation": "**Owe** somebody something = deberle algo a alguien.", "tags": ["vocab"] },
+
+    { "id": "m-1", "type": "multiple-choice", "prompt": "¿Cuál es correcta?", "options": ["Do you know where she works?", "Do you know where does she work?", "Do you know where works she?"], "answer": 0, "explanation": "En la pregunta indirecta va sujeto + verbo y no se usa «does».", "tags": ["g-indirect"] },
+    { "id": "m-2", "type": "multiple-choice", "prompt": "Who ___ the window? It was fine this morning.", "options": ["broke", "did break", "did broke"], "answer": 0, "explanation": "Pregunta de sujeto: sin «did».", "tags": ["g-subject"] },
+    { "id": "m-3", "type": "multiple-choice", "prompt": "¿Cuál es correcta?", "options": ["What are you talking about?", "About what are you talking?", "What you are talking about?"], "answer": 0, "explanation": "Inversión (**are you**) y preposición al final.", "tags": ["g-preposition"] },
+    { "id": "m-4", "type": "multiple-choice", "prompt": "___ you tired? You went to bed at three in the morning!", "options": ["Aren't", "Don't", "Isn't", "Not are"], "answer": 0, "explanation": "Pregunta negativa con el verbo be: **Aren't you…?** Expresa sorpresa.", "tags": ["g-negative"] },
+    { "id": "m-5", "type": "multiple-choice", "prompt": "Could you tell me ___?", "options": ["what time the train leaves", "what time does the train leave", "what time leaves the train"], "answer": 0, "explanation": "Indirecta: sujeto (**the train**) + verbo (**leaves**).", "tags": ["g-indirect"] },
+    { "id": "m-6", "type": "multiple-choice", "prompt": "Alguien que solo piensa en sí mismo es…", "options": ["self-centred", "light-hearted", "foolproof", "good-natured"], "answer": 0, "explanation": "**Self-centred** = egocéntrico.", "tags": ["vocab"] },
+    { "id": "m-7", "type": "multiple-choice", "prompt": "Te hacen una pregunta demasiado personal. ¿Qué respuesta es correcta y educada?", "options": ["I'd rather not answer that if you don't mind.", "I'd rather not to answer that.", "I don't answer that, sorry."], "answer": 0, "explanation": "Después de **would rather** el verbo va sin «to».", "tags": ["phrases"] },
+    { "id": "m-8", "type": "multiple-choice", "prompt": "Un amigo te dice: «I didn't get the job in the end.» ¿Qué reacción encaja mejor?", "options": ["What a shame!", "How interesting!", "Me too!"], "answer": 0, "explanation": "**What a shame!** muestra compasión ante una mala noticia.", "tags": ["phrases"] },
+    { "id": "m-9", "type": "multiple-choice", "prompt": "Who ___ to at the party? (¿Con quién hablaste?)", "options": ["did you talk", "talked you", "did talk"], "answer": 0, "explanation": "Aquí «who» es el objeto (tú hablaste con alguien), así que sí hace falta **did** + sujeto.", "tags": ["g-subject", "g-preposition"] },
+
+    { "id": "d-1", "type": "dictation", "text": "What are you thinking about?", "translation": "¿En qué estás pensando?", "tags": ["g-preposition"] },
+    { "id": "d-2", "type": "dictation", "text": "Who wrote this report?", "translation": "¿Quién escribió este informe?", "tags": ["g-subject"] },
+    { "id": "d-3", "type": "dictation", "text": "Could you tell me where the station is?", "translation": "¿Podría decirme dónde está la estación?", "tags": ["g-indirect"] },
+    { "id": "d-4", "type": "dictation", "text": "Why didn't you tell me?", "translation": "¿Por qué no me lo dijiste?", "tags": ["g-negative"] },
+    { "id": "d-5", "type": "dictation", "text": "Do you know if she's coming to the party?", "alternatives": ["Do you know if she is coming to the party?"], "translation": "¿Sabes si viene a la fiesta?", "tags": ["g-indirect"] },
+    { "id": "d-6", "type": "dictation", "text": "I'd rather not answer that if you don't mind.", "alternatives": ["I would rather not answer that if you don't mind."], "translation": "Preferiría no contestar a eso, si no te importa.", "tags": ["phrases"] },
+
+    { "id": "ma-1", "type": "match", "prompt": "Empareja cada palabra con su traducción.", "pairs": [
+      { "left": "foolproof", "right": "infalible" },
+      { "left": "gut feeling", "right": "corazonada" },
+      { "left": "job-seeker", "right": "persona que busca empleo" },
+      { "left": "self-centred", "right": "egocéntrico" },
+      { "left": "owe", "right": "deber (dinero)" },
+      { "left": "weakness", "right": "punto débil" }
+    ], "tags": ["vocab"] },
+    { "id": "ma-2", "type": "match", "prompt": "Empareja cada pregunta directa con su versión indirecta.", "pairs": [
+      { "left": "Where does he live?", "right": "Do you know where he lives?" },
+      { "left": "Is the café open?", "right": "Do you know if the café is open?" },
+      { "left": "What time did they arrive?", "right": "Could you tell me what time they arrived?" },
+      { "left": "Why is she angry?", "right": "Do you have any idea why she is angry?" }
+    ], "explanation": "En todas las indirectas el orden es sujeto + verbo y desaparece do / does / did.", "tags": ["g-indirect"] },
+    { "id": "ma-3", "type": "match", "prompt": "Empareja cada reacción con su significado.", "pairs": [
+      { "left": "What a shame!", "right": "¡Qué pena!" },
+      { "left": "Me too!", "right": "¡Yo también!" },
+      { "left": "Why is that?", "right": "¿Y eso por qué?" },
+      { "left": "How interesting!", "right": "¡Qué interesante!" },
+      { "left": "Oh, really?", "right": "¿Ah, sí?" }
+    ], "tags": ["phrases"] },
+
+    { "id": "t-1", "type": "translate", "source": "¿Quién vive en ese piso?", "answers": ["Who lives in that flat?", "Who lives in that apartment?"], "explanation": "Pregunta de sujeto: **who lives**, sin «does».", "tags": ["g-subject"] },
+    { "id": "t-2", "type": "translate", "source": "¿Con quién fuiste al concierto?", "answers": ["Who did you go to the concert with?", "Who did you go with to the concert?", "Whom did you go to the concert with?"], "explanation": "La preposición **with** va al final; «who» es objeto, así que hace falta **did**.", "tags": ["g-preposition"] },
+    { "id": "t-3", "type": "translate", "source": "¿Sabes dónde vive Ana?", "answers": ["Do you know where Ana lives?"], "explanation": "Indirecta: **where Ana lives**, no «where does Ana live».", "tags": ["g-indirect"] },
+    { "id": "t-4", "type": "translate", "source": "¿Por qué no me llamaste?", "answers": ["Why didn't you call me?", "Why didn't you phone me?", "Why didn't you ring me?"], "explanation": "Pregunta negativa: **Why didn't you…?**", "tags": ["g-negative"] }
+  ]
+}
