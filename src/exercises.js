@@ -1,45 +1,45 @@
-// Los seis tipos de ejercicio. Cada render devuelve un elemento y llama a onAnswer una sola vez con
+// The six exercise types. Each renderer returns an element and calls onAnswer exactly once with
 // { correct, userAnswer, correctAnswer }.
 import { h, rich, plain } from './ui.js';
 import { checkGap, checkSentence, shuffle, shuffleDifferent } from './check.js';
 import { speak, speechSupported } from './speech.js';
 
 export const TYPE_LABELS = {
-  'multiple-choice': 'Opción múltiple',
-  'fill-gap': 'Rellenar huecos',
-  'order-words': 'Ordenar palabras',
-  match: 'Emparejar',
-  translate: 'Traducción',
-  dictation: 'Dictado',
+  'multiple-choice': 'Multiple choice',
+  'fill-gap': 'Fill in the gaps',
+  'order-words': 'Word order',
+  match: 'Matching',
+  rewrite: 'Rewrite the sentence',
+  dictation: 'Dictation',
 };
 
 const DEFAULT_PROMPTS = {
-  'multiple-choice': 'Elige la opción correcta.',
-  'fill-gap': 'Completa la frase.',
-  'order-words': 'Ordena las palabras para formar la frase.',
-  match: 'Empareja cada elemento con su pareja.',
-  translate: 'Traduce al inglés.',
-  dictation: 'Escucha y escribe lo que oyes.',
+  'multiple-choice': 'Choose the correct option.',
+  'fill-gap': 'Complete the sentence.',
+  'order-words': 'Put the words in order to make a sentence.',
+  match: 'Match the items.',
+  rewrite: 'Rewrite the sentence.',
+  dictation: 'Listen and type what you hear.',
 };
 
-/** Texto corto que identifica un ejercicio (para listas de fallos). */
+/** Short text that identifies an exercise (used in lists of mistakes). */
 export function describe(ex) {
   switch (ex.type) {
     case 'fill-gap': return plain(ex.text);
-    case 'translate': return ex.source;
-    case 'dictation': return 'Dictado';
-    case 'order-words': return ex.translation ? `Ordenar: «${ex.translation}»` : 'Ordenar la frase';
+    case 'rewrite': return `${plain(ex.prompt)} — ${ex.source}`;
+    case 'dictation': return 'Dictation';
+    case 'order-words': return 'Put the words in order';
     default: return plain(ex.prompt ?? DEFAULT_PROMPTS[ex.type]);
   }
 }
 
 export function correctAnswerText(ex) {
   switch (ex.type) {
-    case 'multiple-choice': return ex.options[ex.answer];
+    case 'multiple-choice': return plain(ex.options[ex.answer]);
     case 'fill-gap': { let i = 0; return plain(ex.text).replace(/_{3,}/g, () => ex.answers[i++][0]); }
     case 'order-words': return ex.answer;
     case 'match': return ex.pairs.map((p) => `${p.left} → ${p.right}`).join(' · ');
-    case 'translate': return ex.answers[0];
+    case 'rewrite': return ex.answers[0];
     case 'dictation': return ex.text;
     default: return '';
   }
@@ -60,7 +60,7 @@ function once(fn) {
 }
 
 const checkButton = (disabled = false) =>
-  h('button', { type: 'submit', class: 'btn primary', disabled }, 'Comprobar');
+  h('button', { type: 'submit', class: 'btn primary', disabled }, 'Check');
 
 function lock(form) {
   form.querySelectorAll('input, button, textarea').forEach((el) => { el.disabled = true; });
@@ -69,11 +69,11 @@ function lock(form) {
 function textField(label, placeholder) {
   return h('input', {
     type: 'text', class: 'answer-input', 'aria-label': label, placeholder,
-    autocomplete: 'off', autocapitalize: 'off', autocorrect: 'off', spellcheck: 'false', lang: 'en',
+    autocomplete: 'off', autocapitalize: 'off', autocorrect: 'off', spellcheck: 'false',
   });
 }
 
-// ---------- Opción múltiple ----------
+// ---------- Multiple choice ----------
 function multipleChoice(ex, onAnswer) {
   const order = ex.keepOrder ? ex.options.map((_, i) => i) : shuffle(ex.options.map((_, i) => i));
   const name = `mc-${Math.random().toString(36).slice(2)}`;
@@ -103,8 +103,8 @@ function multipleChoice(ex, onAnswer) {
     const picked = Number(chosen.value);
     form.querySelectorAll('label.option').forEach((label) => {
       const v = Number(label.querySelector('input').value);
-      if (v === ex.answer) { label.classList.add('is-correct'); label.querySelector('.option-mark').textContent = '✓ correcta'; }
-      else if (v === picked) { label.classList.add('is-wrong'); label.querySelector('.option-mark').textContent = '✗ tu respuesta'; }
+      if (v === ex.answer) { label.classList.add('is-correct'); label.querySelector('.option-mark').textContent = '✓ correct'; }
+      else if (v === picked) { label.classList.add('is-wrong'); label.querySelector('.option-mark').textContent = '✗ your answer'; }
     });
     lock(form);
     onAnswer({ correct: picked === ex.answer, userAnswer: plain(ex.options[picked]), correctAnswer: plain(ex.options[ex.answer]) });
@@ -112,16 +112,16 @@ function multipleChoice(ex, onAnswer) {
   return form;
 }
 
-// ---------- Rellenar huecos ----------
+// ---------- Fill in the gaps ----------
 function fillGap(ex, onAnswer) {
   const parts = ex.text.split(/_{3,}/);
   const inputs = [];
-  const sentence = h('p', { class: 'gap-sentence', lang: 'en' });
+  const sentence = h('p', { class: 'gap-sentence' });
   parts.forEach((part, i) => {
     sentence.append(rich(part));
     if (i < parts.length - 1) {
       const longest = Math.max(...ex.answers[i].map((a) => a.length));
-      const input = textField(`Hueco ${i + 1}`, '');
+      const input = textField(`Gap ${i + 1}`, '');
       input.classList.add('gap');
       input.style.width = `${Math.max(5, longest + 3)}ch`;
       inputs.push(input);
@@ -130,7 +130,7 @@ function fillGap(ex, onAnswer) {
   });
   const form = h('form', { class: 'fill' },
     sentence,
-    ex.hint ? h('p', { class: 'hint' }, 'Pista: ', rich(ex.hint)) : null,
+    ex.hint ? h('p', { class: 'hint' }, 'Hint: ', rich(ex.hint)) : null,
     checkButton(),
   );
   form.addEventListener('submit', (e) => {
@@ -151,17 +151,17 @@ function fillGap(ex, onAnswer) {
   return form;
 }
 
-// ---------- Ordenar palabras ----------
+// ---------- Word order ----------
 function orderWords(ex, onAnswer) {
   const words = ex.answer.trim().split(/\s+/);
   const endPunct = (words[words.length - 1].match(/[.?!]+$/) || [''])[0];
   if (endPunct) words[words.length - 1] = words[words.length - 1].slice(0, -endPunct.length);
-  // La mayúscula inicial delataría la primera palabra
+  // A capital letter would give away the first word
   if (!/^I(\b|')/.test(words[0]) && !ex.keepCapital) words[0] = words[0].toLowerCase();
   const tokens = shuffleDifferent([...words, ...(ex.distractors ?? [])]);
 
-  const answerLine = h('div', { class: 'tokens answer-line', role: 'group', 'aria-label': 'Tu frase', lang: 'en' });
-  const bank = h('div', { class: 'tokens bank', role: 'group', 'aria-label': 'Palabras disponibles', lang: 'en' });
+  const answerLine = h('div', { class: 'tokens answer-line', role: 'group', 'aria-label': 'Your sentence' });
+  const bank = h('div', { class: 'tokens bank', role: 'group', 'aria-label': 'Available words' });
   const punct = h('span', { class: 'end-punct', 'aria-hidden': 'true' }, endPunct);
   const submit = checkButton(true);
   const live = h('p', { class: 'sr-only', 'aria-live': 'polite' });
@@ -169,7 +169,7 @@ function orderWords(ex, onAnswer) {
   const refresh = () => {
     answerLine.append(punct);
     submit.disabled = answerLine.querySelectorAll('button').length < words.length;
-    live.textContent = 'Tu frase: ' + [...answerLine.querySelectorAll('button')].map((b) => b.textContent).join(' ');
+    live.textContent = 'Your sentence: ' + [...answerLine.querySelectorAll('button')].map((b) => b.textContent).join(' ');
   };
   tokens.forEach((word) => {
     const btn = h('button', { type: 'button', class: 'token' }, word);
@@ -177,7 +177,7 @@ function orderWords(ex, onAnswer) {
       const toAnswer = btn.parentElement === bank;
       (toAnswer ? answerLine : bank).append(btn);
       refresh();
-      // Mantiene el foco útil al usar teclado
+      // Keep focus somewhere useful for keyboard users
       (toAnswer ? bank.querySelector('button') ?? submit : btn).focus();
     });
     bank.append(btn);
@@ -185,7 +185,7 @@ function orderWords(ex, onAnswer) {
   answerLine.append(punct);
 
   const form = h('form', { class: 'order' },
-    ex.translation ? h('p', { class: 'hint' }, 'Significado: ', ex.translation) : null,
+    ex.hint ? h('p', { class: 'hint' }, 'Hint: ', rich(ex.hint)) : null,
     answerLine, bank, live, submit,
   );
   form.addEventListener('submit', (e) => {
@@ -199,12 +199,12 @@ function orderWords(ex, onAnswer) {
   return form;
 }
 
-// ---------- Emparejar ----------
+// ---------- Matching ----------
 function match(ex, onAnswer) {
   let selected = null; // { side, index, btn }
   let mistakes = 0;
   let matched = 0;
-  const live = h('p', { class: 'match-status', 'aria-live': 'polite' }, 'Elige un elemento de cada columna.');
+  const live = h('p', { class: 'match-status', 'aria-live': 'polite' }, 'Choose one item from each column.');
 
   const makeColumn = (side, order, label) =>
     h('div', { class: 'match-col', role: 'group', 'aria-label': label },
@@ -233,11 +233,11 @@ function match(ex, onAnswer) {
         b.classList.add('is-correct');
         b.querySelector('.match-mark').textContent = ` ✓ ${matched}`;
       }
-      live.textContent = `Correcto: ${plain(ex.pairs[a.index].left)} = ${plain(ex.pairs[a.index].right)}.`;
+      live.textContent = `Correct: ${plain(ex.pairs[a.index].left)} = ${plain(ex.pairs[a.index].right)}.`;
       if (matched === ex.pairs.length) {
         onAnswer({
           correct: mistakes === 0,
-          userAnswer: mistakes === 0 ? 'Todo a la primera' : `${mistakes} ${mistakes === 1 ? 'intento fallido' : 'intentos fallidos'}`,
+          userAnswer: mistakes === 0 ? 'All matched first time' : `${mistakes} wrong ${mistakes === 1 ? 'attempt' : 'attempts'}`,
           correctAnswer: correctAnswerText(ex),
         });
       }
@@ -246,25 +246,25 @@ function match(ex, onAnswer) {
       for (const b of [a.btn, choice.btn]) {
         b.classList.remove('shake'); void b.offsetWidth; b.classList.add('shake');
       }
-      live.textContent = `✗ No coinciden. Prueba otra vez (${mistakes} ${mistakes === 1 ? 'fallo' : 'fallos'}).`;
+      live.textContent = `✗ Those don't match. Try again (${mistakes} ${mistakes === 1 ? 'mistake' : 'mistakes'}).`;
     }
   }
 
   const indexes = ex.pairs.map((_, i) => i);
   return h('div', { class: 'match' },
     h('div', { class: 'match-grid' },
-      makeColumn('left', shuffle(indexes), 'Columna izquierda'),
-      makeColumn('right', shuffleDifferent(indexes), 'Columna derecha')),
+      makeColumn('left', shuffle(indexes), 'Left column'),
+      makeColumn('right', shuffleDifferent(indexes), 'Right column')),
     live,
   );
 }
 
-// ---------- Traducción ES→EN ----------
-function translate(ex, onAnswer) {
-  const input = textField('Tu traducción al inglés', 'Escribe en inglés…');
+// ---------- Rewrite the sentence ----------
+function rewrite(ex, onAnswer) {
+  const input = textField('Your sentence', 'Type your sentence…');
   const form = h('form', { class: 'typed' },
-    h('p', { class: 'source', lang: 'es' }, ex.source),
-    ex.hint ? h('p', { class: 'hint' }, 'Pista: ', rich(ex.hint)) : null,
+    h('p', { class: 'source' }, ex.source),
+    ex.hint ? h('p', { class: 'hint' }, 'Hint: ', rich(ex.hint)) : null,
     input, checkButton(),
   );
   form.addEventListener('submit', (e) => {
@@ -278,15 +278,15 @@ function translate(ex, onAnswer) {
   return form;
 }
 
-// ---------- Dictado ----------
+// ---------- Dictation ----------
 function dictation(ex, onAnswer) {
-  const input = textField('Escribe lo que has oído', 'Escribe lo que oyes…');
+  const input = textField('Type what you heard', 'Type what you hear…');
   const form = h('form', { class: 'typed' },
     h('div', { class: 'row' },
-      h('button', { type: 'button', class: 'btn', onClick: () => speak(ex.text, 0.95) }, '▶ Escuchar'),
-      h('button', { type: 'button', class: 'btn', onClick: () => speak(ex.text, 0.6) }, '🐢 Más lento'),
+      h('button', { type: 'button', class: 'btn', onClick: () => speak(ex.text, 0.95) }, '▶ Listen'),
+      h('button', { type: 'button', class: 'btn', onClick: () => speak(ex.text, 0.6) }, '🐢 Slower'),
     ),
-    speechSupported ? null : h('p', { class: 'hint' }, 'Tu navegador no ofrece síntesis de voz; este ejercicio no se puede escuchar.'),
+    speechSupported ? null : h('p', { class: 'hint' }, 'Your browser has no speech synthesis, so this exercise cannot be played.'),
     input, checkButton(),
   );
   form.addEventListener('submit', (e) => {
@@ -297,7 +297,7 @@ function dictation(ex, onAnswer) {
     lock(form);
     onAnswer({ correct, userAnswer: input.value.trim(), correctAnswer: ex.text });
   });
-  // La reproducción automática necesita un gesto previo del usuario; si el navegador la bloquea, queda el botón
+  // Autoplay needs an earlier user gesture; if the browser blocks it, the button is still there
   setTimeout(() => { if (form.isConnected) speak(ex.text, 0.95); }, 350);
   return form;
 }
@@ -307,6 +307,6 @@ const RENDERERS = {
   'fill-gap': fillGap,
   'order-words': orderWords,
   match,
-  translate,
+  rewrite,
   dictation,
 };

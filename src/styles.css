@@ -55,7 +55,7 @@ main:focus { outline: none; }
 .skip-link { position: absolute; left: -999px; top: 0; background: var(--accent); color: var(--accent-text); padding: 0.5rem 1rem; z-index: 10; }
 .skip-link:focus { left: 0; }
 
-/* Cabecera */
+/* Header */
 .app-header {
   display: flex; align-items: center; gap: 0.5rem 1rem; flex-wrap: wrap;
   padding: 0.6rem 1rem; background: var(--surface); border-bottom: 1px solid var(--border);
@@ -75,7 +75,7 @@ main:focus { outline: none; }
 
 main { max-width: 720px; margin: 0 auto; padding: 1rem 1rem 4rem; }
 
-/* Botones */
+/* Buttons */
 .btn {
   display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem;
   min-height: 44px; padding: 0.55rem 1.1rem; border-radius: 10px;
@@ -98,7 +98,7 @@ main { max-width: 720px; margin: 0 auto; padding: 1rem 1rem 4rem; }
 .back { display: inline-block; color: var(--muted); text-decoration: none; padding: 0.4rem 0; }
 .back:hover { color: var(--text); }
 
-/* Tarjetas y listas */
+/* Cards and lists */
 .card {
   background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
   padding: 1rem; margin: 0.75rem 0;
@@ -136,7 +136,7 @@ main { max-width: 720px; margin: 0 auto; padding: 1rem 1rem 4rem; }
 .pos { font-size: 0.8rem; color: var(--muted); font-style: italic; }
 .ipa { font-size: 0.9rem; color: var(--muted); font-family: 'Segoe UI', 'Lucida Sans Unicode', sans-serif; }
 
-/* Gramática */
+/* Grammar */
 .grammar h2 { margin-top: 0; }
 .example { font-size: 1.05rem; }
 .examples, .mistakes { list-style: none; padding: 0; }
@@ -148,9 +148,9 @@ main { max-width: 720px; margin: 0 auto; padding: 1rem 1rem 4rem; }
 .note { font-style: italic; }
 .reading { padding-left: 0; list-style: none; }
 .reading li { padding: 0.55rem 0; border-bottom: 1px solid var(--border); }
-.reading.hide-es .line-es { display: none; }
+.face-def { font-size: 1.2rem; font-weight: 600; }
 
-/* Sesiones */
+/* Sessions */
 .session-top { display: flex; justify-content: space-between; align-items: center; }
 .counter { color: var(--muted); font-variant-numeric: tabular-nums; }
 .exercise { margin-top: 1.5rem; }
@@ -239,7 +239,7 @@ fieldset { border: 0; padding: 0; margin: 0 0 1rem; display: grid; gap: 0.5rem; 
 .card-actions { justify-content: center; }
 .card-actions .btn { flex: 1; max-width: 220px; }
 
-/* Progreso */
+/* Progress */
 .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 0.6rem; }
 .stats li, .boxes li { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 0.8rem; display: grid; }
 .stats strong { font-size: 1.6rem; }

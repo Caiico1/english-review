@@ -1,4 +1,4 @@
-// Descubre las lecciones automáticamente: cualquier src/lessons/*.json entra en el menú.
+// Discovers lessons automatically: any src/lessons/*.json file shows up in the menu.
 import { shuffle } from './check.js';
 import { getState, getCard, isDue, MASTERED_BOX } from './store.js';
 
@@ -10,36 +10,36 @@ export const lessons = Object.values(modules)
 
 export const getLesson = (id) => lessons.find((l) => l.id === id);
 
-/** Tarjetas de una lección: vocabulario + frases, con una forma común. */
+/** A lesson's flashcards: vocabulary plus phrases, in one common shape. */
 export function cardsOf(lesson) {
   return [
     ...(lesson.vocabulary ?? []).map((v) => ({
-      id: v.id, en: v.word, es: v.translation, pos: v.partOfSpeech,
-      example: v.example, exampleEs: v.exampleTranslation, hint: v.pronunciationHint,
+      id: v.id, en: v.word, def: v.definition, pos: v.partOfSpeech,
+      example: v.example, hint: v.pronunciationHint,
     })),
-    ...(lesson.phrases ?? []).map((p) => ({ id: p.id, en: p.en, es: p.es, pos: 'frase', context: p.context })),
+    ...(lesson.phrases ?? []).map((p) => ({ id: p.id, en: p.phrase, def: p.meaning, pos: 'phrase', context: p.context })),
   ];
 }
 
 const AUTO = 'auto-mc:';
 
-/** Pregunta de opción múltiple generada a partir de una tarjeta (para tests y repasos). */
+/** Multiple-choice question generated from a flashcard (for tests and reviews). */
 export function vocabQuestion(lesson, card) {
-  const others = shuffle(cardsOf(lesson).filter((c) => c.id !== card.id && c.es !== card.es)).slice(0, 3);
+  const others = shuffle(cardsOf(lesson).filter((c) => c.id !== card.id && c.def !== card.def)).slice(0, 3);
   const options = shuffle([card, ...others]);
   return {
     id: AUTO + card.id,
     type: 'multiple-choice',
-    prompt: `¿Qué significa «${card.en}»?`,
-    options: options.map((c) => c.es),
+    prompt: `What does “${card.en}” mean?`,
+    options: options.map((c) => c.def),
     answer: options.indexOf(card),
-    explanation: card.example ? `Ejemplo: ${card.example}` : undefined,
+    explanation: card.example ? `Example: ${card.example}` : undefined,
     cardId: card.id,
     keepOrder: true,
   };
 }
 
-/** Recupera un ejercicio por id, incluidos los generados y las preguntas de la lectura. */
+/** Finds an exercise by id, including generated ones and reading questions. */
 export function findExercise(lesson, exId) {
   if (exId.startsWith(AUTO)) {
     const card = cardsOf(lesson).find((c) => c.id === exId.slice(AUTO.length));
@@ -52,7 +52,7 @@ export function findExercise(lesson, exId) {
   );
 }
 
-/** Ordena ejercicios para una sesión: primero los nunca hechos, luego los últimos fallados, luego el resto. */
+/** Orders exercises for a session: never attempted first, then last answered wrong, then the rest. */
 export function prioritise(lesson, exercises) {
   const done = getState().lessons[lesson.id]?.exercises ?? {};
   const rank = (e) => (!done[e.id] ? 0 : done[e.id].lastCorrect ? 2 : 1);
@@ -68,7 +68,7 @@ export function lessonStats(lesson) {
   const tests = entry?.tests ?? [];
   const bestTest = tests.reduce((best, t) => Math.max(best, t.score / t.total), 0);
 
-  // % completado = 40 % ejercicios acertados alguna vez + 40 % avance de vocabulario + 20 % mejor test
+  // % complete = 40% exercises answered correctly at least once + 40% vocabulary progress + 20% best test
   const vocabFrac = cards.length ? boxes.reduce((s, b) => s + Math.max(0, b - 1) / (MASTERED_BOX - 1), 0) / cards.length : 1;
   const exFrac = lesson.exercises.length ? exCorrect / lesson.exercises.length : 1;
   const percent = Math.round(100 * (0.4 * exFrac + 0.4 * Math.min(1, vocabFrac) + 0.2 * bestTest));
@@ -89,13 +89,13 @@ export function lessonStats(lesson) {
   };
 }
 
-/** Siguiente paso recomendado dentro de una lección (para el botón «Continuar»). */
+/** Recommended next step inside a lesson (for the Continue button). */
 export function nextStep(lesson) {
   const s = lessonStats(lesson);
   const visited = getState().lessons[lesson.id]?.visited ?? {};
-  if (!visited.grammar && lesson.grammar?.length) return { href: `#/lesson/${lesson.id}/grammar`, label: 'Leer la gramática' };
-  if (s.cardsDue > 0) return { href: `#/lesson/${lesson.id}/vocab`, label: `Repasar vocabulario (${s.cardsDue})` };
-  if (s.exCorrect < s.exTotal) return { href: `#/lesson/${lesson.id}/exercises`, label: 'Hacer ejercicios' };
-  if (s.bestTest === null || s.bestTest < 80) return { href: `#/lesson/${lesson.id}/test`, label: 'Hacer el test final' };
-  return { href: `#/lesson/${lesson.id}`, label: 'Ver la lección' };
+  if (!visited.grammar && lesson.grammar?.length) return { href: `#/lesson/${lesson.id}/grammar`, label: 'Read the grammar' };
+  if (s.cardsDue > 0) return { href: `#/lesson/${lesson.id}/vocab`, label: `Review vocabulary (${s.cardsDue})` };
+  if (s.exCorrect < s.exTotal) return { href: `#/lesson/${lesson.id}/exercises`, label: 'Do the exercises' };
+  if (s.bestTest === null || s.bestTest < 80) return { href: `#/lesson/${lesson.id}/test`, label: 'Take the final test' };
+  return { href: `#/lesson/${lesson.id}`, label: 'Open the lesson' };
 }

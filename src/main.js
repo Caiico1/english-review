@@ -21,7 +21,7 @@ const ROUTES = [
   [/^\/progress$/, progressView],
 ];
 
-const NAV = [['#/', 'Inicio'], ['#/review', 'Repaso'], ['#/mistakes', 'Errores'], ['#/progress', 'Progreso']];
+const NAV = [['#/', 'Home'], ['#/review', 'Review'], ['#/mistakes', 'Mistakes'], ['#/progress', 'Progress']];
 
 function renderNav(path) {
   document.getElementById('nav').replaceChildren(...NAV.map(([href, label]) => {
@@ -37,9 +37,9 @@ function route() {
   main.replaceChildren();
   const match = ROUTES.map(([re, view]) => [path.match(re), view]).find(([m]) => m);
   if (match) match[1](main, ...match[0].slice(1));
-  else main.replaceChildren(h('h1', null, 'Página no encontrada'), h('a', { class: 'btn', href: '#/' }, 'Volver al inicio'));
+  else main.replaceChildren(h('h1', null, 'Page not found'), h('a', { class: 'btn', href: '#/' }, 'Back to home'));
   window.scrollTo(0, 0);
-  // Lleva el foco al contenido nuevo para lectores de pantalla y teclado, salvo que la vista ya lo haya colocado
+  // Move focus to the new content for screen readers and keyboard users, unless the view already placed it
   if (!main.contains(document.activeElement)) main.focus({ preventScroll: true });
 }
 
@@ -56,17 +56,17 @@ if (getState().settings.theme) document.documentElement.dataset.theme = getState
 window.addEventListener('hashchange', route);
 route();
 
-// Offline: service worker solo en producción (en desarrollo estorbaría a la recarga en caliente)
+// Offline: the service worker runs only in production (in development it would get in the way of hot reload)
 if (import.meta.env.PROD && 'serviceWorker' in navigator) {
   window.addEventListener('load', async () => {
     try {
       await navigator.serviceWorker.register('./sw.js');
-      // Guarda ya los recursos de esta primera carga, que el service worker aún no ha interceptado
+      // Cache the resources from this first load, which the service worker has not intercepted yet
       const urls = performance.getEntriesByType('resource')
         .map((r) => r.name)
         .filter((u) => u.startsWith(location.origin));
-      const cache = await caches.open('english-review-v1');
+      const cache = await caches.open('english-review-v2');
       await cache.addAll([...new Set(['./', ...urls])]);
-    } catch { /* sin service worker la app sigue funcionando con conexión */ }
+    } catch { /* without a service worker the app still works online */ }
   });
 }

@@ -1,6 +1,6 @@
-// Service worker mínimo: guarda en caché lo que se va pidiendo para poder abrir la app sin conexión.
-const CACHE = 'english-review-v1';
-// El servidor puede enviar «Vary: Origin»; sin ignorarlo, las peticiones de <script crossorigin> no encuentran su copia
+// Minimal service worker: caches whatever is requested so the app can open offline.
+const CACHE = 'english-review-v2';
+// The server may send "Vary: Origin"; unless it is ignored, <script crossorigin> requests miss their cached copy
 const MATCH = { ignoreVary: true };
 
 self.addEventListener('install', (event) => {
@@ -30,10 +30,10 @@ self.addEventListener('fetch', (event) => {
   });
 
   if (req.mode === 'navigate') {
-    // La página: red primero, para recibir versiones nuevas; caché si no hay conexión
+    // The page: network first, to pick up new versions; cache when offline
     event.respondWith(fromNetwork.catch(() => caches.match(req, MATCH).then((r) => r || caches.match('./index.html', MATCH))));
   } else {
-    // Recursos: caché primero y se actualiza en segundo plano
+    // Assets: cache first, refreshed in the background
     event.respondWith(caches.match(req, MATCH).then((cached) => cached || fromNetwork));
     event.waitUntil(fromNetwork.catch(() => {}));
   }

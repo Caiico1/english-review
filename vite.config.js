@@ -1,6 +1,6 @@
 import { defineConfig } from 'vite';
 
-// base relativa: la carpeta dist/ funciona en cualquier ruta de un hosting estático
+// relative base: the dist/ folder works under any path on a static host
 export default defineConfig({
   base: './',
   server: { port: 5173, strictPort: true },

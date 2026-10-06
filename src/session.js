@@ -1,11 +1,11 @@
-// Motor de sesiones: una pregunta por pantalla, barra de progreso, corrección y resumen final.
+// Session engine: one question per screen, progress bar, feedback and a final summary.
 import { h, rich, progressBar } from './ui.js';
 import { renderExercise, describe, TYPE_LABELS } from './exercises.js';
 import { recordAnswer, recordCard, recordTest } from './store.js';
 import { speechSupported, stopSpeaking, speakButton } from './speech.js';
 
 /**
- * @param root   contenedor
+ * @param root   container element
  * @param opts   { title, items: [{ lesson, ex }], mode: 'practice' | 'test', backHref, emptyMessage }
  */
 export function runSession(root, { title, items, mode = 'practice', backHref = '#/', emptyMessage }) {
@@ -18,8 +18,8 @@ export function runSession(root, { title, items, mode = 'practice', backHref = '
   if (!items.length) {
     root.replaceChildren(
       h('h1', null, title),
-      h('p', { class: 'empty' }, emptyMessage ?? 'No hay nada que practicar aquí todavía.'),
-      h('a', { class: 'btn primary', href: backHref }, 'Volver'),
+      h('p', { class: 'empty' }, emptyMessage ?? 'There is nothing to practise here yet.'),
+      h('a', { class: 'btn primary', href: backHref }, 'Back'),
     );
     return;
   }
@@ -30,11 +30,11 @@ export function runSession(root, { title, items, mode = 'practice', backHref = '
     const feedback = h('div', { class: 'feedback-slot', 'aria-live': 'polite' });
     const view = h('section', { class: 'session' },
       h('div', { class: 'session-top' },
-        h('a', { class: 'back', href: backHref, 'aria-label': 'Salir de la sesión' }, '✕ Salir'),
+        h('a', { class: 'back', href: backHref, 'aria-label': 'Leave the session' }, '✕ Quit'),
         h('span', { class: 'counter' }, `${index + 1} / ${items.length}`),
       ),
-      progressBar(index, items.length, `Progreso de la sesión: pregunta ${index + 1} de ${items.length}`),
-      h('h1', { class: 'sr-only' }, `${title}: pregunta ${index + 1} de ${items.length}`),
+      progressBar(index, items.length, `Session progress: question ${index + 1} of ${items.length}`),
+      h('h1', { class: 'sr-only' }, `${title}: question ${index + 1} of ${items.length}`),
       renderExercise(ex, (result) => onAnswer(lesson, ex, result, feedback)),
       feedback,
     );
@@ -50,11 +50,11 @@ export function runSession(root, { title, items, mode = 'practice', backHref = '
 
     const last = index === items.length - 1;
     const next = h('button', { type: 'button', class: 'btn primary', onClick: advance },
-      last ? 'Ver resultado' : 'Siguiente');
+      last ? 'See results' : 'Next');
     if (isTest) {
-      // En el test no se corrige pregunta a pregunta: la nota y los fallos van al final
+      // No question-by-question marking in the test: the score and the mistakes come at the end
       slot.replaceChildren(h('div', { class: 'feedback neutral' },
-        h('p', null, 'Respuesta guardada.'), next));
+        h('p', null, 'Answer saved.'), next));
     } else {
       slot.replaceChildren(feedbackPanel(ex, result, next));
     }
@@ -75,31 +75,31 @@ export function runSession(root, { title, items, mode = 'practice', backHref = '
     if (isTest) recordTest(results[0].lesson.id, right, results.length);
 
     const verdict =
-      pct === 100 ? 'Sin fallos. Esta parte la tienes dominada.'
-      : pct >= 80 ? 'Buen resultado. Repasa los fallos de abajo para cerrarlo.'
-      : pct >= 60 ? 'Vas bien, pero aún hay cosas sin asentar. Mira los fallos con calma.'
-      : 'Todavía cuesta: conviene releer la gramática y repetir. Es normal en un primer repaso.';
+      pct === 100 ? 'No mistakes. You have this part under control.'
+      : pct >= 80 ? 'A good result. Go through the mistakes below to finish the job.'
+      : pct >= 60 ? 'You are getting there, but some points are not solid yet. Take your time over the mistakes.'
+      : 'This is still hard: reread the grammar and try again. That is normal on a first review.';
 
     root.replaceChildren(h('section', { class: 'summary' },
-      h('h1', null, isTest ? 'Resultado del test' : 'Sesión terminada'),
+      h('h1', null, isTest ? 'Test result' : 'Session complete'),
       h('p', { class: 'score' },
-        h('strong', null, isTest ? `${(pct / 10).toFixed(1).replace('.', ',')} / 10` : `${right} de ${results.length}`),
-        h('span', null, isTest ? ` · ${right} de ${results.length} correctas` : ` · ${pct} %`)),
+        h('strong', null, isTest ? `${(pct / 10).toFixed(1)} / 10` : `${right} out of ${results.length}`),
+        h('span', null, isTest ? ` · ${right} out of ${results.length} correct` : ` · ${pct}%`)),
       h('p', null, verdict),
-      skipped ? h('p', { class: 'hint' }, `Se han omitido ${skipped} dictados porque este navegador no tiene síntesis de voz.`) : null,
+      skipped ? h('p', { class: 'hint' }, `${skipped} dictation ${skipped === 1 ? 'exercise was' : 'exercises were'} skipped because this browser has no speech synthesis.`) : null,
       wrong.length
         ? h('div', null,
-            h('h2', null, `Fallos (${wrong.length})`),
+            h('h2', null, `Mistakes (${wrong.length})`),
             h('ul', { class: 'review-list' }, wrong.map((r) => h('li', null, failureCard(r)))))
         : null,
       h('div', { class: 'row' },
         wrong.length
           ? h('button', {
               type: 'button', class: 'btn primary',
-              onClick: () => runSession(root, { title: 'Repetir fallos', items: wrong.map(({ lesson, ex }) => ({ lesson, ex })), backHref }),
-            }, 'Repetir solo los fallos')
+              onClick: () => runSession(root, { title: 'Retry mistakes', items: wrong.map(({ lesson, ex }) => ({ lesson, ex })), backHref }),
+            }, 'Retry only the mistakes')
           : null,
-        h('a', { class: wrong.length ? 'btn' : 'btn primary', href: backHref }, 'Volver'),
+        h('a', { class: wrong.length ? 'btn' : 'btn primary', href: backHref }, 'Back'),
       ),
     ));
     root.querySelector('h1').setAttribute('tabindex', '-1');
@@ -112,12 +112,11 @@ export function runSession(root, { title, items, mode = 'practice', backHref = '
 function feedbackPanel(ex, result, nextButton) {
   const ok = result.correct;
   return h('div', { class: `feedback ${ok ? 'ok' : 'ko'}` },
-    h('p', { class: 'feedback-title' }, ok ? '✓ Correcto' : '✗ No es correcto'),
-    ok ? null : h('p', null, 'Respuesta correcta: ',
-      h('strong', { lang: 'en' }, result.correctAnswer), ' ', ex.type === 'match' ? null : speakButton(result.correctAnswer)),
-    ok && ex.type === 'dictation' ? h('p', { lang: 'en' }, ex.text) : null,
-    result.alternatives?.length ? h('p', { class: 'small' }, 'También vale: ', result.alternatives.join(' · ')) : null,
-    ex.translation && ex.type === 'dictation' ? h('p', { class: 'small' }, 'Significa: ', ex.translation) : null,
+    h('p', { class: 'feedback-title' }, ok ? '✓ Correct' : '✗ Not quite'),
+    ok ? null : h('p', null, 'Correct answer: ',
+      h('strong', null, result.correctAnswer), ' ', ex.type === 'match' ? null : speakButton(result.correctAnswer)),
+    ok && ex.type === 'dictation' ? h('p', null, ex.text) : null,
+    result.alternatives?.length ? h('p', { class: 'small' }, 'Also accepted: ', result.alternatives.join(' · ')) : null,
     ex.explanation ? rich(ex.explanation, 'p', 'explanation') : null,
     nextButton,
   );
@@ -127,8 +126,8 @@ function failureCard(r) {
   return h('div', { class: 'card' },
     h('p', { class: 'ex-type' }, TYPE_LABELS[r.ex.type]),
     h('p', null, describe(r.ex)),
-    h('p', { class: 'small' }, 'Tu respuesta: ', h('span', { class: 'wrong-text' }, r.userAnswer || '—')),
-    h('p', null, 'Correcta: ', h('strong', { lang: 'en' }, r.correctAnswer)),
+    h('p', { class: 'small' }, 'Your answer: ', h('span', { class: 'wrong-text' }, r.userAnswer || '—')),
+    h('p', null, 'Correct: ', h('strong', null, r.correctAnswer)),
     r.ex.explanation ? rich(r.ex.explanation, 'p', 'explanation') : null,
   );
 }

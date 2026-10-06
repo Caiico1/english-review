@@ -1,4 +1,4 @@
-// Pantallas globales: inicio, cuaderno de errores, repaso acumulado y progreso.
+// Global screens: home, mistakes notebook, cumulative review and progress.
 import { h, formatDate, progressBar } from '../ui.js';
 import { lessons, getLesson, lessonStats, nextStep, cardsOf, findExercise, vocabQuestion, prioritise } from '../lessons.js';
 import {
@@ -12,7 +12,9 @@ import { shuffle } from '../check.js';
 const REVIEW_SIZE = 12;
 const MISTAKE_SESSION = 15;
 
-// ---------- Inicio ----------
+const times = (n) => (n === 1 ? 'once' : `${n} times`);
+
+// ---------- Home ----------
 export function homeView(root) {
   const state = getState();
   const days = streak();
@@ -23,44 +25,45 @@ export function homeView(root) {
 
   if (!lessons.length) {
     root.replaceChildren(h('h1', null, 'English Review'),
-      h('p', { class: 'empty' }, 'Todavía no hay lecciones. Añade un archivo en src/lessons/ (mira el README).'));
+      h('p', { class: 'empty' }, 'There are no lessons yet. Add a file to src/lessons/ (see the README).'));
     return;
   }
   const step = nextStep(current);
 
   root.replaceChildren(
-    h('h1', null, 'Tu repaso de inglés'),
-    h('p', { class: 'lead' }, days
-      ? (days === 1 ? 'Hoy ya has practicado. Vuelve mañana para empezar una racha.' : `Llevas ${days} días seguidos practicando.`)
-      : 'Una sesión corta después de cada clase es suficiente para afianzar.'),
+    h('h1', null, 'Your English review'),
+    h('p', { class: 'lead' }, days > 1
+      ? `You have practised ${days} days in a row.`
+      : days === 1 ? 'You have already practised today. Come back tomorrow to start a streak.'
+      : 'One short session after each class is enough to make it stick.'),
 
     h('section', { class: 'card continue', 'aria-labelledby': 'h-continue' },
-      h('h2', { id: 'h-continue' }, withActivity.length ? 'Continuar' : 'Empezar'),
-      h('p', null, `Lección ${current.id.toUpperCase()} · ${current.title}`),
-      h('a', { class: 'btn primary', href: step.href }, withActivity.length ? `Continuar: ${step.label}` : `Empezar: ${step.label}`)),
+      h('h2', { id: 'h-continue' }, withActivity.length ? 'Continue' : 'Get started'),
+      h('p', null, `Lesson ${current.id.toUpperCase()} · ${current.title}`),
+      h('a', { class: 'btn primary', href: step.href }, withActivity.length ? `Continue: ${step.label}` : `Start: ${step.label}`)),
 
     h('section', { 'aria-labelledby': 'h-lessons' },
-      h('h2', { id: 'h-lessons' }, 'Lecciones'),
+      h('h2', { id: 'h-lessons' }, 'Lessons'),
       h('ul', { class: 'lesson-list' }, lessons.map((l) => {
         const s = lessonStats(l);
         return h('li', null,
           h('a', { class: 'card lesson-card', href: `#/lesson/${l.id}` },
-            h('span', { class: 'eyebrow' }, `Lección ${l.id.toUpperCase()}`),
+            h('span', { class: 'eyebrow' }, `Lesson ${l.id.toUpperCase()}`),
             h('span', { class: 'lesson-title' }, l.title),
             h('span', { class: 'percent-row' },
-              progressBar(s.percent, 100, `Lección ${l.id} completada`), h('span', null, `${s.percent} %`)),
+              progressBar(s.percent, 100, `Lesson ${l.id} completed`), h('span', null, `${s.percent}%`)),
             h('span', { class: 'small' },
-              s.lastSession ? `Última sesión: ${formatDate(s.lastSession)}` : 'Sin empezar',
-              s.cardsDue && s.lastSession ? ` · ${s.cardsDue} tarjetas para hoy` : '')));
+              s.lastSession ? `Last session: ${formatDate(s.lastSession)}` : 'Not started',
+              s.cardsDue && s.lastSession ? ` · ${s.cardsDue} cards due today` : '')));
       }))),
 
     h('div', { class: 'row' },
-      h('a', { class: 'btn', href: '#/review' }, 'Repaso acumulado'),
-      h('a', { class: 'btn', href: '#/mistakes' }, `Cuaderno de errores (${Object.keys(state.mistakes).length})`)),
+      h('a', { class: 'btn', href: '#/review' }, 'Cumulative review'),
+      h('a', { class: 'btn', href: '#/mistakes' }, `Mistakes notebook (${Object.keys(state.mistakes).length})`)),
   );
 }
 
-// ---------- Cuaderno de errores ----------
+// ---------- Mistakes notebook ----------
 function mistakeEntries() {
   const out = [];
   for (const [key, m] of Object.entries(getState().mistakes)) {
@@ -93,45 +96,45 @@ export function mistakesView(root) {
       .map((w) => ({ lesson: w.lesson, ex: vocabQuestion(w.lesson, w.card) }))
       .filter((i) => !mistakeIds.has(`${i.lesson.id}:${i.ex.id}`));
     runSession(root, {
-      title: 'Practicar mis fallos',
+      title: 'Practise my mistakes',
       items: shuffle([...entries.map(({ lesson, ex }) => ({ lesson, ex })), ...fromWords]).slice(0, MISTAKE_SESSION),
       backHref: '#/mistakes',
     });
   };
 
   root.replaceChildren(
-    h('h1', null, 'Cuaderno de errores'),
-    h('p', null, 'Aquí se guarda todo lo que fallas. Un ejercicio sale del cuaderno cuando lo aciertas dos veces seguidas.'),
+    h('h1', null, 'Mistakes notebook'),
+    h('p', null, 'Everything you get wrong is kept here. An exercise leaves the notebook once you get it right twice in a row.'),
     entries.length || words.length
-      ? h('button', { type: 'button', class: 'btn primary', onClick: practise }, 'Practicar solo mis fallos')
-      : h('p', { class: 'empty' }, 'Ahora mismo no tienes fallos pendientes. Cuando falles algo, aparecerá aquí.'),
+      ? h('button', { type: 'button', class: 'btn primary', onClick: practise }, 'Practise only my mistakes')
+      : h('p', { class: 'empty' }, 'You have no outstanding mistakes right now. When you get something wrong, it will appear here.'),
 
     entries.length
       ? h('section', { 'aria-labelledby': 'h-ex' },
-          h('h2', { id: 'h-ex' }, `Ejercicios fallados (${entries.length})`),
+          h('h2', { id: 'h-ex' }, `Exercises you got wrong (${entries.length})`),
           h('ul', { class: 'review-list' }, entries.map((e) =>
             h('li', null, h('div', { class: 'card' },
-              h('p', { class: 'ex-type' }, `${TYPE_LABELS[e.ex.type]} · Lección ${e.lesson.id.toUpperCase()}`),
+              h('p', { class: 'ex-type' }, `${TYPE_LABELS[e.ex.type]} · Lesson ${e.lesson.id.toUpperCase()}`),
               h('p', null, describe(e.ex)),
-              h('p', null, 'Correcta: ', h('strong', { lang: 'en' }, correctAnswerText(e.ex))),
+              h('p', null, 'Correct: ', h('strong', null, correctAnswerText(e.ex))),
               h('p', { class: 'small' },
-                `Fallado ${e.count} ${e.count === 1 ? 'vez' : 'veces'} · último: ${formatDate(e.last)}`,
-                e.streak ? ' · acertado 1 vez desde entonces' : ''))))))
+                `Missed ${times(e.count)} · last time: ${formatDate(e.last)}`,
+                e.streak ? ' · answered correctly once since then' : ''))))))
       : null,
 
     words.length
       ? h('section', { 'aria-labelledby': 'h-words' },
-          h('h2', { id: 'h-words' }, `Palabras que se resisten (${words.length})`),
+          h('h2', { id: 'h-words' }, `Words that won't stick (${words.length})`),
           h('ul', { class: 'vocab-list' }, words.map((w) =>
             h('li', null,
-              h('div', { class: 'vocab-head' }, h('strong', { lang: 'en' }, w.card.en), speakButton(w.card.en)),
-              h('div', null, w.card.es),
-              h('div', { class: 'small' }, `Fallada ${w.wrong} ${w.wrong === 1 ? 'vez' : 'veces'} · caja ${w.box}`)))))
+              h('div', { class: 'vocab-head' }, h('strong', null, w.card.en), speakButton(w.card.en)),
+              h('div', null, w.card.def),
+              h('div', { class: 'small' }, `Missed ${times(w.wrong)} · box ${w.box}`)))))
       : null,
   );
 }
 
-// ---------- Repaso acumulado ----------
+// ---------- Cumulative review ----------
 export function buildReview() {
   const today = dayKey();
   const cardPool = [];
@@ -144,10 +147,10 @@ export function buildReview() {
     const started = getState().lessons[lesson.id];
     if (started) prioritise(lesson, lesson.exercises).forEach((ex, rank) => exPool.push({ lesson, ex, rank }));
   }
-  // Vocabulario: primero lo que toca hoy y lo que está en cajas bajas
+  // Vocabulary: cards that are due and cards in low boxes come first
   const cards = shuffle(cardPool).sort((a, b) => a.overdue - b.overdue || a.box - b.box).slice(0, 5)
     .map(({ lesson, card }) => ({ lesson, ex: vocabQuestion(lesson, card) }));
-  // Ejercicios: repartidos entre lecciones, respetando la prioridad de cada una
+  // Exercises: spread across lessons, keeping each lesson's own priority order
   const exercises = exPool.sort((a, b) => a.rank - b.rank).slice(0, REVIEW_SIZE - cards.length)
     .map(({ lesson, ex }) => ({ lesson, ex }));
   return shuffle([...cards, ...exercises]);
@@ -156,21 +159,21 @@ export function buildReview() {
 export function reviewView(root) {
   const started = lessons.filter((l) => getState().lessons[l.id]);
   root.replaceChildren(
-    h('h1', null, 'Repaso acumulado'),
-    h('p', null, `Una sesión de unas ${REVIEW_SIZE} preguntas que mezcla vocabulario y ejercicios de todas las lecciones que ya has empezado, dando prioridad a lo que toca repasar y a lo que fallaste.`),
+    h('h1', null, 'Cumulative review'),
+    h('p', null, `A session of about ${REVIEW_SIZE} questions mixing vocabulary and exercises from every lesson you have started, with priority for what is due and what you got wrong.`),
     started.length
-      ? h('p', { class: 'small' }, `Lecciones incluidas: ${started.map((l) => l.id.toUpperCase()).join(', ')}.`)
-      : h('p', { class: 'empty' }, 'Aún no has empezado ninguna lección. Haz primero una sesión de la lección 1.'),
+      ? h('p', { class: 'small' }, `Lessons included: ${started.map((l) => l.id.toUpperCase()).join(', ')}.`)
+      : h('p', { class: 'empty' }, 'You have not started any lessons yet. Do a session from lesson 1 first.'),
     started.length
       ? h('button', {
           type: 'button', class: 'btn primary',
-          onClick: () => runSession(root, { title: 'Repaso acumulado', items: buildReview(), backHref: '#/review' }),
-        }, 'Empezar el repaso')
-      : h('a', { class: 'btn primary', href: '#/' }, 'Ir a las lecciones'),
+          onClick: () => runSession(root, { title: 'Cumulative review', items: buildReview(), backHref: '#/review' }),
+        }, 'Start the review')
+      : h('a', { class: 'btn primary', href: '#/' }, 'Go to the lessons'),
   );
 }
 
-// ---------- Progreso ----------
+// ---------- Progress ----------
 export function progressView(root) {
   const state = getState();
   const stats = lessons.map((l) => ({ lesson: l, s: lessonStats(l) }));
@@ -184,18 +187,18 @@ export function progressView(root) {
 
   const stat = (value, label) => h('li', null, h('strong', null, value), h('span', null, label));
 
-  const fileInput = h('input', { type: 'file', accept: 'application/json,.json', class: 'sr-only', 'aria-label': 'Archivo de progreso' });
+  const fileInput = h('input', { type: 'file', accept: 'application/json,.json', class: 'sr-only', 'aria-label': 'Progress file' });
   fileInput.addEventListener('change', async () => {
     const file = fileInput.files[0];
     if (!file) return;
     try {
       const text = await file.text();
-      if (!confirm('Importar sustituirá el progreso actual de este dispositivo. ¿Continuar?')) return;
+      if (!confirm('Importing will replace the progress saved on this device. Continue?')) return;
       importProgress(text);
       progressView(root);
-      root.querySelector('[role=status]').textContent = 'Progreso importado correctamente.';
+      root.querySelector('[role=status]').textContent = 'Progress imported.';
     } catch (err) {
-      message.textContent = `No se ha podido importar: ${err.message}`;
+      message.textContent = `Could not import: ${err.message}`;
     } finally {
       fileInput.value = '';
     }
@@ -203,61 +206,64 @@ export function progressView(root) {
 
   const doExport = () => {
     const blob = new Blob([exportProgress()], { type: 'application/json' });
-    const a = h('a', { href: URL.createObjectURL(blob), download: `english-review-progreso-${dayKey()}.json` });
+    const a = h('a', { href: URL.createObjectURL(blob), download: `english-review-progress-${dayKey()}.json` });
     document.body.append(a);
     a.click();
     a.remove();
     setTimeout(() => URL.revokeObjectURL(a.href), 1000);
-    message.textContent = 'Progreso exportado. Guarda el archivo para llevarlo a otro dispositivo.';
+    message.textContent = 'Progress exported. Keep the file to move it to another device.';
   };
 
+  const streakDays = streak();
+  const practised = Object.keys(state.days).length;
+
   root.replaceChildren(
-    h('h1', null, 'Progreso'),
+    h('h1', null, 'Progress'),
     h('ul', { class: 'stats' },
-      stat(streak(), 'días de racha'),
-      stat(Object.keys(state.days).length, 'días practicados'),
-      stat(`${mastered} / ${totalCards}`, 'palabras dominadas'),
-      stat(attempts ? `${Math.round((100 * correct) / attempts)} %` : '—', 'precisión global')),
-    h('p', { class: 'small' }, `Una palabra cuenta como dominada cuando llega a la caja ${MASTERED_BOX} (la has acertado en repasos separados por varios días).`),
+      stat(streakDays, streakDays === 1 ? 'day streak' : 'days streak'),
+      stat(practised, practised === 1 ? 'day practised' : 'days practised'),
+      stat(`${mastered} / ${totalCards}`, 'words mastered'),
+      stat(attempts ? `${Math.round((100 * correct) / attempts)}%` : '—', 'overall accuracy')),
+    h('p', { class: 'small' }, `A word counts as mastered when it reaches box ${MASTERED_BOX} (you have got it right in reviews several days apart).`),
 
     h('section', { 'aria-labelledby': 'h-boxes' },
-      h('h2', { id: 'h-boxes' }, 'Vocabulario por cajas'),
+      h('h2', { id: 'h-boxes' }, 'Vocabulary by box'),
       h('ul', { class: 'box-bars' }, boxCounts.map((n, i) =>
         h('li', null,
-          h('span', { class: 'box-label' }, i === 0 ? 'Sin ver' : `Caja ${i}`),
-          progressBar(n, totalCards || 1, i === 0 ? 'Tarjetas sin ver' : `Tarjetas en la caja ${i}`),
+          h('span', { class: 'box-label' }, i === 0 ? 'Not seen' : `Box ${i}`),
+          progressBar(n, totalCards || 1, i === 0 ? 'Cards not seen yet' : `Cards in box ${i}`),
           h('span', { class: 'box-count' }, n))))),
 
     h('section', { 'aria-labelledby': 'h-by-lesson' },
-      h('h2', { id: 'h-by-lesson' }, 'Por lección'),
+      h('h2', { id: 'h-by-lesson' }, 'By lesson'),
       h('div', { class: 'table-wrap' },
         h('table', null,
           h('thead', null, h('tr', null,
-            ['Lección', 'Completado', 'Precisión', 'Mejor test', 'Última sesión'].map((t) => h('th', { scope: 'col' }, t)))),
+            ['Lesson', 'Complete', 'Accuracy', 'Best test', 'Last session'].map((t) => h('th', { scope: 'col' }, t)))),
           h('tbody', null, stats.map(({ lesson, s }) =>
             h('tr', null,
               h('th', { scope: 'row' }, h('a', { href: `#/lesson/${lesson.id}` }, `${lesson.id.toUpperCase()} · ${lesson.title}`)),
-              h('td', null, `${s.percent} %`),
-              h('td', null, s.accuracy === null ? '—' : `${s.accuracy} % (${s.correct}/${s.attempts})`),
-              h('td', null, s.bestTest === null ? '—' : `${(s.bestTest / 10).toFixed(1).replace('.', ',')}`),
+              h('td', null, `${s.percent}%`),
+              h('td', null, s.accuracy === null ? '—' : `${s.accuracy}% (${s.correct}/${s.attempts})`),
+              h('td', null, s.bestTest === null ? '—' : (s.bestTest / 10).toFixed(1)),
               h('td', null, formatDate(s.lastSession)))))))),
 
     h('section', { 'aria-labelledby': 'h-data' },
-      h('h2', { id: 'h-data' }, 'Copia de seguridad'),
-      h('p', { class: 'small' }, 'El progreso se guarda solo en este navegador. Expórtalo para tener una copia o para pasarlo del ordenador al móvil.'),
+      h('h2', { id: 'h-data' }, 'Backup'),
+      h('p', { class: 'small' }, 'Your progress is stored only in this browser. Export it to keep a copy or to move it from your computer to your phone.'),
       h('div', { class: 'row' },
-        h('button', { type: 'button', class: 'btn', onClick: doExport }, 'Exportar progreso (JSON)'),
-        h('button', { type: 'button', class: 'btn', onClick: () => fileInput.click() }, 'Importar progreso'),
+        h('button', { type: 'button', class: 'btn', onClick: doExport }, 'Export progress (JSON)'),
+        h('button', { type: 'button', class: 'btn', onClick: () => fileInput.click() }, 'Import progress'),
         fileInput,
         h('button', {
           type: 'button', class: 'btn danger',
           onClick: () => {
-            if (confirm('Esto borra todo el progreso de este dispositivo y no se puede deshacer. ¿Seguro?')) {
+            if (confirm('This deletes all progress on this device and cannot be undone. Are you sure?')) {
               resetProgress();
               progressView(root);
             }
           },
-        }, 'Borrar progreso')),
+        }, 'Delete progress')),
       message),
   );
 }

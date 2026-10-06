@@ -1,4 +1,4 @@
-// Comparación de respuestas. Funciones puras, sin DOM, para poder probarlas con node --test.
+// Answer checking. Pure functions with no DOM, so they can be tested with node --test.
 
 const CONTRACTIONS = [
   [/\bcan't\b/g, 'can not'],
@@ -12,7 +12,7 @@ const CONTRACTIONS = [
   [/'ll\b/g, ' will'],
 ];
 
-/** Minúsculas, espacios colapsados y apóstrofos tipográficos unificados. */
+/** Lower case, collapsed spaces and curly apostrophes normalised. */
 export function normalize(text) {
   return String(text ?? '')
     .toLowerCase()
@@ -22,7 +22,7 @@ export function normalize(text) {
     .trim();
 }
 
-/** Como normalize, pero además ignora la puntuación y equipara contracciones (don't = do not). */
+/** Like normalize, but also ignores punctuation and treats contractions as equal (don't = do not). */
 export function normalizeSentence(text) {
   let s = normalize(text);
   for (const [re, to] of CONTRACTIONS) s = s.replace(re, to);
@@ -32,13 +32,13 @@ export function normalizeSentence(text) {
     .trim();
 }
 
-/** Hueco de un fill-gap: tolera mayúsculas, espacios, puntuación final y contracciones. */
+/** One gap in a fill-gap exercise: tolerates capitals, spaces, final punctuation and contractions. */
 export function checkGap(input, accepted) {
   const given = normalizeSentence(input);
   return given !== '' && accepted.some((a) => normalizeSentence(a) === given);
 }
 
-/** Frase completa (traducción, dictado, ordenar palabras). */
+/** A whole sentence (rewrite, dictation, word order). */
 export function checkSentence(input, accepted) {
   const given = normalizeSentence(input);
   return given !== '' && accepted.some((a) => normalizeSentence(a) === given);
@@ -53,7 +53,7 @@ export function shuffle(list) {
   return a;
 }
 
-/** Baraja garantizando que el resultado no coincide con el orden original (si es posible). */
+/** Shuffles, making sure the result differs from the original order when possible. */
 export function shuffleDifferent(list) {
   if (list.length < 2 || new Set(list).size < 2) return [...list];
   let out;

@@ -1,149 +1,151 @@
 # English Review
 
-App estática para repasar un libro de inglés lección a lección. Sin backend ni cuentas: el progreso se guarda en el navegador (localStorage) y se puede exportar e importar en JSON.
+A static app for reviewing an English course lesson by lesson, aimed at B2 learners. Everything the learner sees is in English. There is no backend and no accounts: progress is stored in the browser (localStorage) and can be exported and imported as JSON.
 
-## Arrancar
+## Getting started
 
 ```bash
 npm install
 npm run dev
 ```
 
-Abre <http://localhost:5173>.
+Open <http://localhost:5173>.
 
-| Comando | Qué hace |
+| Command | What it does |
 | --- | --- |
-| `npm run dev` | Servidor de desarrollo con recarga automática |
-| `npm run validate` | Revisa todas las lecciones y avisa de errores (`npm run validate -- 01b` para una sola) |
-| `npm test` | Pruebas de la corrección de respuestas y del validador |
-| `npm run build` | Valida las lecciones y genera la versión final en `dist/` |
-| `npm run preview` | Sirve `dist/` en local para probar la versión final |
+| `npm run dev` | Development server with hot reload |
+| `npm run validate` | Checks every lesson and reports errors (`npm run validate -- 01b` for just one) |
+| `npm test` | Tests for answer checking and for the validator |
+| `npm run build` | Validates the lessons and builds the final version into `dist/` |
+| `npm run preview` | Serves `dist/` locally to try the final version |
+| `npm run build:portable` | Builds a single-file version into `portable/` |
 
-### En línea (cualquier PC o móvil)
+### Online (any computer or phone)
 
-La app está publicada en <https://caiico1.github.io/english-review/>. Cada `git push` a `main` la vuelve a publicar sola en un par de minutos (flujo en `.github/workflows/deploy.yml`), así que una lección nueva llega a todos los dispositivos con:
+The app is published at <https://caiico1.github.io/english-review/>. Every `git push` to `main` republishes it within a couple of minutes (see `.github/workflows/deploy.yml`), so a new lesson reaches every device with:
 
 ```bash
-git add -A && git commit -m "Lección 1B" && git push
+git add -A && git commit -m "Lesson 1B" && git push
 ```
 
-Tras la primera visita queda guardada en el dispositivo y abre sin conexión. El progreso sigue siendo local de cada navegador: para moverlo, **Progreso → Exportar** e **Importar**.
+After the first visit the app is saved on the device and opens offline. On a phone you can use "Add to Home screen". Progress stays local to each browser: to move it, use **Progress → Export** on one device and **Import** on the other.
 
-### Otros ordenadores: versión portátil
+### Other computers: portable version
 
 ```bash
 npm run build:portable
 ```
 
-Genera `portable/english-review.html`: toda la app y todas las lecciones en un único archivo. Cópialo a otro PC (USB, correo, Drive…) y ábrelo con doble clic en Chrome o Edge; no hace falta instalar nada ni tener conexión.
+This builds `portable/english-review.html`: the whole app and every lesson in one file. Copy it to another computer (USB stick, email, Drive…) and open it with a double click in Chrome or Edge. Nothing needs installing and no connection is needed.
 
-- Cada vez que añadas una lección, vuelve a generar el archivo y cópialo de nuevo.
-- El progreso se guarda en el navegador de cada PC. Para llevarlo de uno a otro: **Progreso → Exportar** e **Importar**.
-- Guarda el archivo siempre en la misma ruta de ese PC; si lo mueves o lo renombras, el navegador puede tratarlo como una página nueva y empezar sin progreso (por eso conviene exportar de vez en cuando).
+- Rebuild and copy the file again whenever you add a lesson.
+- Keep the file in the same place on that computer. If you move or rename it, the browser may treat it as a new page and start with no progress, so export from time to time.
 
-### Móvil y uso sin conexión
+### Audio
 
-`dist/` es una carpeta estática: súbela a cualquier hosting estático con HTTPS (GitHub Pages, Netlify, Cloudflare Pages…). Tras la primera visita la app queda guardada y abre sin conexión; desde el menú del navegador del móvil se puede «Añadir a pantalla de inicio».
+Pronunciation and dictation use the device's English voice (Web Speech API). If the browser has none, dictation exercises are left out of sessions.
 
-El modo sin conexión solo existe en la versión de `build` (no en `npm run dev`) y los navegadores lo exigen servido por HTTPS o desde `localhost`. Para pasar el progreso del ordenador al móvil: **Progreso → Exportar** en uno e **Importar** en el otro.
+## Adding a lesson
 
-La pronunciación y los dictados usan la voz en inglés del dispositivo (Web Speech API). Si el navegador no tiene ninguna, los dictados se omiten de las sesiones.
+1. Create `src/lessons/lesson-<id>.json` (for example `lesson-01b.json`). The quickest way is to copy `lesson-01a.json`.
+2. The `id` inside must match the file name (`"id": "01b"`). The menu is sorted by `id`.
+3. Run `npm run validate`.
 
-## Añadir una lección
+No code changes are needed: the app discovers every file in `src/lessons/` by itself.
 
-1. Crea `src/lessons/lesson-<id>.json` (por ejemplo `lesson-01b.json`). Lo más rápido es copiar `lesson-01a.json`.
-2. El `id` de dentro debe coincidir con el nombre del archivo (`"id": "01b"`). El menú se ordena por `id`.
-3. Ejecuta `npm run validate`.
+## JSON format
 
-No hay que tocar código: la app descubre sola todos los archivos de `src/lessons/`.
-
-## Formato del JSON
-
-El esquema completo está en `schema/lesson.schema.json`. Con la línea `"$schema": "../../schema/lesson.schema.json"` al principio del archivo, VS Code autocompleta y subraya errores mientras escribes.
+The full schema is in `schema/lesson.schema.json`. With `"$schema": "../../schema/lesson.schema.json"` at the top of the file, VS Code autocompletes and underlines errors as you type.
 
 ```jsonc
 {
   "$schema": "../../schema/lesson.schema.json",
-  "id": "01b",                     // 2 dígitos + letra opcional; igual que el nombre del archivo
-  "number": 1,                     // unidad del libro
+  "id": "01b",                     // 2 digits + optional letter; same as the file name
+  "number": 1,                     // unit in the book
   "title": "It's a mystery",
-  "classDate": "2026-10-12",       // AAAA-MM-DD
+  "classDate": "2026-10-12",       // YYYY-MM-DD
   "objectives": ["…"],
 
-  "vocabulary": [                  // mínimo 4
-    { "id": "v-geek", "word": "geek", "translation": "friki", "partOfSpeech": "noun",
-      "example": "He's a computer **geek**.", "exampleTranslation": "Es un friki de los ordenadores.",
-      "pronunciationHint": "/ɡiːk/" }                          // opcional
+  "vocabulary": [                  // at least 4
+    { "id": "v-geek", "word": "geek", "partOfSpeech": "noun",
+      "definition": "someone who knows a lot about one subject",
+      "example": "He's a computer **geek**.",
+      "pronunciationHint": "/ɡiːk/" }                          // optional
   ],
-  "phrases": [ { "id": "p-shame", "en": "What a shame!", "es": "¡Qué pena!", "context": "Cuándo se usa" } ],
+  "phrases": [
+    { "id": "p-shame", "phrase": "What a shame!", "meaning": "shows you are sorry about bad news",
+      "context": "Use it to show sympathy." }                  // context is optional
+  ],
 
   "grammar": [
-    { "id": "g-indirect", "title": "…", "explanation": "En español.",
+    { "id": "g-indirect", "title": "…", "explanation": "…",
       "rules": ["…"],
-      "examples": [ { "en": "Do you know where **he lives**?", "es": "…", "note": "opcional" } ],
+      "examples": [ { "en": "Do you know where **he lives**?", "note": "optional" } ],
       "commonMistakes": [ { "wrong": "…", "right": "…", "why": "…" } ] }
   ],
 
-  "reading": {                     // opcional
-    "type": "dialogue",            // o "text"
+  "reading": {                     // optional
+    "type": "dialogue",            // or "text"
     "title": "…", "intro": "…",
-    "lines": [ { "speaker": "Ana", "en": "…", "es": "…" } ],
-    "questions": [ /* ejercicios, mismo formato que abajo */ ]
+    "lines": [ { "speaker": "Ana", "en": "…" } ],
+    "questions": [ /* exercises, same format as below */ ]
   },
 
-  "exercises": [ /* ver tipos */ ]
+  "exercises": [ /* see the types below */ ]
 }
 ```
 
-- `**texto**` resalta la estructura en ejemplos, reglas, opciones y explicaciones.
-- Cada elemento lleva un `id` único dentro de la lección (minúsculas, números y guiones). **No lo cambies después**: el progreso se guarda por `id`.
-- `explanation` es lo que se enseña al fallar; `tags` es libre.
+- `**text**` highlights the structure in examples, rules, options and explanations.
+- Every item has an `id` that is unique within the lesson (lower case, digits and hyphens). **Don't change it later**: progress is stored by `id`.
+- `explanation` is what the learner sees after a mistake; `tags` is free-form.
+- Write definitions, hints and explanations in English.
 
-### Tipos de ejercicio
+### Exercise types
 
 ```jsonc
-// Opción múltiple: answer es el índice (desde 0) de la correcta; las opciones se barajan solas
-{ "id": "m-1", "type": "multiple-choice", "prompt": "¿Cuál es correcta?",
+// Multiple choice: answer is the index (from 0) of the correct option; options are shuffled for you
+{ "id": "m-1", "type": "multiple-choice", "prompt": "Which sentence is correct?",
   "options": ["Who wrote this?", "Who did write this?"], "answer": 0, "explanation": "…" }
 
-// Rellenar huecos: cada ___ es un hueco; answers tiene una lista de válidas por hueco
+// Fill in the gaps: each ___ is a gap; answers holds one list of accepted answers per gap
 { "id": "f-1", "type": "fill-gap", "text": "Where ___ last summer?", "hint": "you / go",
   "answers": [["did you go"]], "explanation": "…" }
 
-// Ordenar palabras: las fichas salen de separar answer por espacios
+// Word order: the tiles come from splitting answer on spaces
 { "id": "o-1", "type": "order-words", "answer": "What are you waiting for?",
-  "translation": "¿A qué esperas?", "alternatives": [], "distractors": [], "explanation": "…" }
+  "hint": "optional clue", "alternatives": [], "distractors": [], "explanation": "…" }
 
-// Emparejar
-{ "id": "ma-1", "type": "match", "prompt": "Empareja…",
-  "pairs": [ { "left": "owe", "right": "deber" }, { "left": "tough", "right": "difícil" } ] }
+// Matching
+{ "id": "ma-1", "type": "match", "prompt": "Match each word with its definition.",
+  "pairs": [ { "left": "owe", "right": "to have to pay money back" }, { "left": "tough", "right": "difficult" } ] }
 
-// Traducción ES→EN: todas las respuestas válidas; la primera se muestra como modelo
-{ "id": "t-1", "type": "translate", "source": "¿Quién vive aquí?",
-  "answers": ["Who lives here?"], "explanation": "…" }
+// Rewrite the sentence: prompt is the instruction; list every accepted answer, the first is the model
+{ "id": "rw-1", "type": "rewrite", "prompt": "Rewrite as an indirect question. Begin: Could you tell me…",
+  "source": "What time does the museum close?",
+  "answers": ["Could you tell me what time the museum closes?"], "explanation": "…" }
 
-// Dictado: text se lee en voz alta
-{ "id": "d-1", "type": "dictation", "text": "Why didn't you tell me?", "translation": "…" }
+// Dictation: text is read aloud
+{ "id": "d-1", "type": "dictation", "text": "Why didn't you tell me?" }
 ```
 
-Al corregir se ignoran mayúsculas, espacios de más y puntuación, y las contracciones cuentan igual que la forma completa (`don't` = `do not`). El orden de las palabras sí cuenta.
+Checking ignores capitals, extra spaces and punctuation, and contractions count the same as the full form (`don't` = `do not`). Word order does count.
 
-## Cómo funciona el repaso
+## How the review works
 
-- **Cajas de Leitner**: cada tarjeta (vocabulario y frases) empieza en la caja 1. Un acierto la sube de caja y la aplaza 1, 3, 7 y 14 días; un fallo la devuelve a la caja 1 y vuelve a salir en la misma sesión. Una palabra está «dominada» a partir de la caja 4.
-- **Cuaderno de errores**: guarda cada ejercicio fallado; sale del cuaderno al acertarlo dos veces seguidas.
-- **% completado** de una lección: 40 % ejercicios acertados alguna vez, 40 % avance del vocabulario y 20 % la mejor nota del test.
+- **Leitner boxes**: every card (vocabulary and phrases) starts in box 1. A correct answer moves it up a box and delays it by 1, 3, 7 and 14 days; a miss sends it back to box 1 and it comes up again in the same session. A word is "mastered" from box 4.
+- **Mistakes notebook**: keeps every exercise you get wrong; an exercise leaves the notebook once you get it right twice in a row.
+- **% complete** for a lesson: 40% exercises answered correctly at least once, 40% vocabulary progress and 20% your best test score.
 
-## Estructura
+## Structure
 
 ```
-src/lessons/      una lección = un JSON
-src/exercises.js  los seis tipos de ejercicio
-src/session.js    sesiones (una pregunta por pantalla, corrección, resumen)
-src/store.js      progreso, Leitner, exportar/importar
-src/check.js      comparación de respuestas
-src/views/        pantallas
-schema/           esquema JSON de una lección
-scripts/          validador y pruebas
-public/sw.js      service worker (modo sin conexión)
+src/lessons/      one lesson = one JSON file
+src/exercises.js  the six exercise types
+src/session.js    sessions (one question per screen, feedback, summary)
+src/store.js      progress, Leitner, export / import
+src/check.js      answer checking
+src/views/        screens
+schema/           JSON schema for a lesson
+scripts/          validator, tests and the portable build
+public/sw.js      service worker (offline mode)
 ```

@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="es">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -8,7 +8,7 @@
     <link rel="manifest" href="./manifest.webmanifest" />
     <link rel="icon" href="./icon.svg" type="image/svg+xml" />
     <script>
-      // Aplica el tema guardado antes de pintar, para evitar el parpadeo
+      // Apply the saved theme before painting, to avoid a flash
       try {
         var t = JSON.parse(localStorage.getItem('english-review:v1') || '{}');
         if (t.settings && t.settings.theme) document.documentElement.dataset.theme = t.settings.theme;
@@ -16,11 +16,11 @@
     </script>
   </head>
   <body>
-    <a class="skip-link" href="#main">Saltar al contenido</a>
+    <a class="skip-link" href="#main">Skip to content</a>
     <header class="app-header">
       <a class="brand" href="#/">English Review</a>
-      <nav aria-label="Principal" id="nav"></nav>
-      <button type="button" class="icon-btn" id="theme-toggle" aria-label="Cambiar entre modo claro y oscuro">◐</button>
+      <nav aria-label="Main" id="nav"></nav>
+      <button type="button" class="icon-btn" id="theme-toggle" aria-label="Switch between light and dark mode">◐</button>
     </header>
     <main id="main" tabindex="-1"></main>
     <script type="module" src="/src/main.js"></script>

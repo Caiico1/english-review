@@ -1,4 +1,4 @@
-// Utilidades mínimas de DOM.
+// Minimal DOM helpers.
 
 export function h(tag, props, ...children) {
   const el = document.createElement(tag);
@@ -21,7 +21,7 @@ export function escapeHtml(s) {
   return String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 }
 
-/** Texto de las lecciones: **así** se resalta la estructura. Devuelve un <span>. */
+/** Lesson text: **like this** highlights the structure. Returns an element (a <span> by default). */
 export function rich(text, tag = 'span', cls) {
   const html = escapeHtml(text ?? '').replace(/\*\*(.+?)\*\*/g, '<mark>$1</mark>');
   return h(tag, { html, class: cls });
@@ -32,7 +32,7 @@ export const plain = (text) => String(text ?? '').replace(/\*\*/g, '');
 export function formatDate(iso) {
   if (!iso) return '—';
   const d = new Date(iso.length === 10 ? iso + 'T12:00:00' : iso);
-  return d.toLocaleDateString('es-ES', { day: 'numeric', month: 'short', year: 'numeric' });
+  return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
 }
 
 export function progressBar(value, max, label) {

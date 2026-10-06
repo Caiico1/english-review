@@ -1,8 +1,8 @@
 {
   "name": "English Review",
   "short_name": "English",
-  "description": "Repaso de inglés lección a lección",
-  "lang": "es",
+  "description": "Review your English course lesson by lesson",
+  "lang": "en",
   "start_url": "./",
   "display": "standalone",
   "background_color": "#f6f5f1",
